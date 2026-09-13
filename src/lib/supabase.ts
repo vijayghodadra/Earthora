@@ -61,8 +61,18 @@ export const supabaseDb = {
     if (!isSupabaseConfigured) return null;
     try {
       const { data, error } = await supabase.from('products').select('*');
-      if (error) return null;
-      return data as ProductBundle[];
+      if (error || !data) return null;
+      return data.map((item: any) => ({
+        id: item.id,
+        name: item.name,
+        size: item.size,
+        price: Number(item.price),
+        originalPrice: item.original_price ? Number(item.original_price) : (item.originalPrice ? Number(item.originalPrice) : Math.round(Number(item.price) * 1.3)),
+        discount: item.discount,
+        badge: item.badge,
+        bestValue: Boolean(item.best_value ?? item.bestValue),
+        image: item.image
+      })) as ProductBundle[];
     } catch (e) {
       return null;
     }
@@ -71,7 +81,18 @@ export const supabaseDb = {
   async saveProducts(bundles: ProductBundle[]): Promise<boolean> {
     if (!isSupabaseConfigured) return false;
     try {
-      const { error } = await supabase.from('products').upsert(bundles);
+      const formatted = bundles.map(b => ({
+        id: b.id,
+        name: b.name,
+        size: b.size,
+        price: b.price,
+        original_price: b.originalPrice,
+        discount: b.discount,
+        badge: b.badge,
+        best_value: b.bestValue,
+        image: b.image
+      }));
+      const { error } = await supabase.from('products').upsert(formatted);
       return !error;
     } catch (e) {
       return false;

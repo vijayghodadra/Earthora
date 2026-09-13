@@ -27,6 +27,8 @@ import {
 } from './data/adminData';
 import type { CustomerOrder, CustomerProfile, CouponCode, StoreSettings, OrderStatus } from './types/adminTypes';
 
+import { supabaseDb, isSupabaseConfigured } from './lib/supabase';
+
 function App() {
   const [currentView, setCurrentView] = useState<'store' | 'admin'>('store');
   const [isAdminLoginOpen, setIsAdminLoginOpen] = useState(false);
@@ -66,9 +68,19 @@ function App() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  // Sync state changes with localStorage
+  // Fetch live Supabase data on mount
+  useEffect(() => {
+    if (isSupabaseConfigured) {
+      supabaseDb.getOrders().then(data => data && setOrders(data));
+      supabaseDb.getProducts().then(data => data && setBundles(data));
+      supabaseDb.getReviews().then(data => data && setReviewsList(data));
+    }
+  }, []);
+
+  // Sync state changes with localStorage & Supabase
   useEffect(() => {
     localStorage.setItem('earthora_bundles', JSON.stringify(bundles));
+    if (isSupabaseConfigured) supabaseDb.saveProducts(bundles);
   }, [bundles]);
 
   useEffect(() => {
@@ -186,6 +198,9 @@ function App() {
       }
       return ord;
     }));
+    if (isSupabaseConfigured) {
+      supabaseDb.updateOrderStatus(orderId, status, trackingNumber);
+    }
   };
 
   const totalCartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -243,7 +258,12 @@ function App() {
         items={cartItems}
         onUpdateQty={handleUpdateQty}
         onRemoveItem={handleRemoveItem}
-        onPlaceOrder={(newOrder) => setOrders(prev => [newOrder, ...prev])}
+        onPlaceOrder={(newOrder) => {
+          setOrders(prev => [newOrder, ...prev]);
+          if (isSupabaseConfigured) {
+            supabaseDb.createOrder(newOrder);
+          }
+        }}
       />
 
       <AdminLoginModal

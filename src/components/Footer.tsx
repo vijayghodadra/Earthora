@@ -1,6 +1,12 @@
 import './Footer.css';
+import { ShieldCheck } from 'lucide-react';
+import logoImg from '../assets/logo.jpeg';
 
-const Footer = () => {
+interface FooterProps {
+  onOpenAdmin?: () => void;
+}
+
+const Footer = ({ onOpenAdmin }: FooterProps) => {
   return (
     <footer className="footer">
       <div className="section-container">
@@ -8,8 +14,7 @@ const Footer = () => {
         <div className="footer-top">
           <div className="footer-brand-col">
             <a href="#hero" className="footer-logo">
-              <span className="logo-text">EARTHORA</span>
-              <span className="logo-badge">LUXURY</span>
+              <img src={logoImg} alt="EarthOra" className="brand-logo-img footer-logo-img" />
             </a>
             <p className="footer-tagline">
               Curated botanical wellness. Crafted with uncompromising standards for those who value elegance and distinction.
@@ -37,6 +42,14 @@ const Footer = () => {
               <div className="footer-col-title">Customer Care</div>
               <a href="#faq">Shipping & Returns</a>
               <a href="#faq">Track Your Order</a>
+              {onOpenAdmin && (
+                <button 
+                  className="footer-admin-btn"
+                  onClick={onOpenAdmin}
+                >
+                  <ShieldCheck size={14} /> Executive Admin Portal
+                </button>
+              )}
               <a href="#faq">Privacy Policy</a>
               <a href="#faq">Terms of Service</a>
             </div>
@@ -56,3 +69,4 @@ const Footer = () => {
 };
 
 export default Footer;
+

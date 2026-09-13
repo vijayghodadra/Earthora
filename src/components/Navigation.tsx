@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, Menu, X, ChevronRight } from 'lucide-react';
+import { ShoppingBag, Menu, X, ChevronRight, ShieldCheck } from 'lucide-react';
+import logoImg from '../assets/logo.jpeg';
 import './Navigation.css';
 
 interface NavigationProps {
   cartCount: number;
   onOpenCart: () => void;
   onQuickBuy: () => void;
+  onOpenAdmin: () => void;
 }
 
-const Navigation = ({ cartCount, onOpenCart, onQuickBuy }: NavigationProps) => {
+const Navigation = ({ cartCount, onOpenCart, onQuickBuy, onOpenAdmin }: NavigationProps) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -42,8 +44,7 @@ const Navigation = ({ cartCount, onOpenCart, onQuickBuy }: NavigationProps) => {
       <header className={`nav-header ${scrolled ? 'scrolled' : ''}`}>
         <div className="nav-container">
           <a href="#hero" onClick={(e) => handleNavClick(e, '#hero')} className="nav-logo">
-            <span className="logo-text">EARTHORA</span>
-            <span className="logo-badge">LUXURY</span>
+            <img src={logoImg} alt="EarthOra" className="brand-logo-img" />
           </a>
 
           <nav className="nav-desktop-menu">
@@ -60,6 +61,15 @@ const Navigation = ({ cartCount, onOpenCart, onQuickBuy }: NavigationProps) => {
           </nav>
 
           <div className="nav-actions">
+            <button 
+              className="admin-portal-trigger" 
+              onClick={onOpenAdmin} 
+              title="Open Admin Portal"
+            >
+              <ShieldCheck size={16} />
+              <span className="admin-trigger-label">Admin</span>
+            </button>
+
             <button className="cart-trigger" onClick={onOpenCart} aria-label="Cart">
               <ShoppingBag size={20} />
               {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
@@ -97,7 +107,7 @@ const Navigation = ({ cartCount, onOpenCart, onQuickBuy }: NavigationProps) => {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="drawer-header">
-                <div className="drawer-logo">EARTHORA</div>
+                <img src={logoImg} alt="EarthOra" className="brand-logo-img drawer-logo-img" />
                 <button onClick={() => setMobileMenuOpen(false)} className="close-btn">
                   <X size={24} />
                 </button>
@@ -118,6 +128,19 @@ const Navigation = ({ cartCount, onOpenCart, onQuickBuy }: NavigationProps) => {
                     <ChevronRight size={18} className="chevron" />
                   </a>
                 ))}
+
+                <button 
+                  className="drawer-link admin-drawer-link"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onOpenAdmin();
+                  }}
+                >
+                  <span className="flex-center gap-xs text-gold">
+                    <ShieldCheck size={18} /> Executive Admin Portal
+                  </span>
+                  <ChevronRight size={18} className="chevron" />
+                </button>
               </div>
 
               <div className="drawer-footer">
@@ -140,3 +163,4 @@ const Navigation = ({ cartCount, onOpenCart, onQuickBuy }: NavigationProps) => {
 };
 
 export default Navigation;
+

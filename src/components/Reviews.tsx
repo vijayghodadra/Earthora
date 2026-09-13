@@ -1,9 +1,15 @@
 import { motion } from 'framer-motion';
 import { Star, CheckCircle } from 'lucide-react';
-import { productData } from '../data/productData';
+import { productData, type Review } from '../data/productData';
 import './Reviews.css';
 
-const Reviews = () => {
+interface ReviewsProps {
+  reviewsList?: Review[];
+}
+
+const Reviews = ({ reviewsList }: ReviewsProps) => {
+  const displayReviews = reviewsList && reviewsList.length > 0 ? reviewsList : productData.reviews;
+
   return (
     <section id="reviews" className="reviews-section">
       <div className="section-container">
@@ -26,7 +32,7 @@ const Reviews = () => {
         </div>
 
         <div className="reviews-grid">
-          {productData.reviews.map((review, idx) => (
+          {displayReviews.map((review, idx) => (
             <motion.div
               key={review.id}
               className="review-card"

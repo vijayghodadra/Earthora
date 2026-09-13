@@ -32,8 +32,11 @@
   gap: 0.5rem;
 }
 
-.footer-logo .logo-text {
-  color: #ffffff;
+.footer-logo-img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 4px;
 }
 
 .footer-tagline {
@@ -79,6 +82,28 @@
 
 .footer-col a:hover {
   color: #ffffff;
+  transform: translateX(2px);
+}
+
+.footer-admin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: #D4AF37;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  cursor: pointer;
+  width: fit-content;
+  transition: all 0.2s ease;
+}
+
+.footer-admin-btn:hover {
+  background: rgba(212, 175, 55, 0.25);
+  border-color: #D4AF37;
   transform: translateX(2px);
 }
 

@@ -225,3 +225,145 @@
   color: var(--text-muted);
   margin-top: 0.2rem;
 }
+
+/* Payment Options Grid */
+.payment-options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.payment-option-card {
+  padding: 0.85rem;
+  border-radius: 8px;
+  background-color: var(--admin-input-bg, #F8FAFC);
+  border: 1px solid var(--admin-input-border, #CBD5E1);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.payment-option-card:hover, .payment-option-card.active {
+  border-color: var(--admin-gold, #B8860B);
+  background-color: var(--admin-gold-bg, rgba(184, 134, 11, 0.1));
+}
+
+.rzp-badge {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 0.6rem;
+  font-weight: 800;
+  background: #02042B;
+  color: #0C66E4;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+}
+
+/* Razorpay Window */
+.rzp-overlay {
+  z-index: 3000 !important;
+}
+
+.rzp-window {
+  width: 100%;
+  max-width: 420px;
+  background: #0C1024;
+  color: #FFFFFF;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.rzp-header {
+  background: linear-gradient(135deg, #0A1338, #13225E);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.rzp-logo-tag {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #0284C7;
+  margin-bottom: 0.2rem;
+}
+
+.rzp-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #FFFFFF;
+}
+
+.rzp-header p {
+  margin: 0.2rem 0 0 0;
+  font-size: 0.85rem;
+  color: #94A3B8;
+}
+
+.rzp-body {
+  padding: 1.25rem 1.5rem;
+}
+
+.rzp-method-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.rzp-method-item {
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  cursor: pointer;
+}
+
+.rzp-method-item.active {
+  border-color: #0284C7;
+  background: rgba(2, 132, 199, 0.12);
+}
+
+.rzp-pay-now-btn {
+  width: 100%;
+  padding: 0.85rem;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #0284C7, #0369A1);
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+  transition: all 0.2s ease;
+}
+
+.rzp-pay-now-btn:hover {
+  filter: brightness(1.15);
+}
+
+.rzp-footer-tag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  color: #64748B;
+  margin-top: 0.75rem;
+}
+

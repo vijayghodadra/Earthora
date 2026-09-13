@@ -16,13 +16,85 @@ import type { CartItem } from './components/CartDrawer';
 import Footer from './components/Footer';
 
 import { productData } from './data/productData';
-import type { ProductBundle } from './data/productData';
+import type { ProductBundle, Review } from './data/productData';
+import { AdminPanel } from './components/admin/AdminPanel';
+import { AdminLoginModal } from './components/admin/AdminLoginModal';
+import { 
+  initialOrders, 
+  initialCustomers, 
+  initialCoupons, 
+  initialSettings 
+} from './data/adminData';
+import type { CustomerOrder, CustomerProfile, CouponCode, StoreSettings, OrderStatus } from './types/adminTypes';
 
 function App() {
+  const [currentView, setCurrentView] = useState<'store' | 'admin'>('store');
+  const [isAdminLoginOpen, setIsAdminLoginOpen] = useState(false);
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
+
+  // Dynamic state with localStorage initialization
+  const [bundles, setBundles] = useState<ProductBundle[]>(() => {
+    const saved = localStorage.getItem('earthora_bundles');
+    return saved ? JSON.parse(saved) : productData.bundles;
+  });
+
+  const [orders, setOrders] = useState<CustomerOrder[]>(() => {
+    const saved = localStorage.getItem('earthora_orders');
+    return saved ? JSON.parse(saved) : initialOrders;
+  });
+
+  const [customers] = useState<CustomerProfile[]>(() => {
+    const saved = localStorage.getItem('earthora_customers');
+    return saved ? JSON.parse(saved) : initialCustomers;
+  });
+
+  const [reviewsList, setReviewsList] = useState<Review[]>(() => {
+    const saved = localStorage.getItem('earthora_reviews');
+    return saved ? JSON.parse(saved) : productData.reviews;
+  });
+
+  const [coupons, setCoupons] = useState<CouponCode[]>(() => {
+    const saved = localStorage.getItem('earthora_coupons');
+    return saved ? JSON.parse(saved) : initialCoupons;
+  });
+
+  const [settings, setSettings] = useState<StoreSettings>(() => {
+    const saved = localStorage.getItem('earthora_settings');
+    return saved ? JSON.parse(saved) : initialSettings;
+  });
+
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
+  // Sync state changes with localStorage
   useEffect(() => {
+    localStorage.setItem('earthora_bundles', JSON.stringify(bundles));
+  }, [bundles]);
+
+  useEffect(() => {
+    localStorage.setItem('earthora_orders', JSON.stringify(orders));
+  }, [orders]);
+
+  useEffect(() => {
+    localStorage.setItem('earthora_customers', JSON.stringify(customers));
+  }, [customers]);
+
+  useEffect(() => {
+    localStorage.setItem('earthora_reviews', JSON.stringify(reviewsList));
+  }, [reviewsList]);
+
+  useEffect(() => {
+    localStorage.setItem('earthora_coupons', JSON.stringify(coupons));
+  }, [coupons]);
+
+  useEffect(() => {
+    localStorage.setItem('earthora_settings', JSON.stringify(settings));
+  }, [settings]);
+
+  // Smooth scroll
+  useEffect(() => {
+    if (currentView !== 'store') return;
+
     const lenis = new Lenis({
       duration: 1.5,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -43,7 +115,7 @@ function App() {
     return () => {
       lenis.destroy();
     };
-  }, []);
+  }, [currentView]);
 
   const handleAddToCart = (bundle: ProductBundle, quantity: number) => {
     const qtyToAdd = quantity > 0 ? quantity : 1;
@@ -67,7 +139,7 @@ function App() {
   };
 
   const handleQuickBuy = () => {
-    const defaultBundle = productData.bundles[1] || productData.bundles[0];
+    const defaultBundle = bundles[1] || bundles[0];
     handleAddToCart(defaultBundle, 1);
   };
 
@@ -89,7 +161,53 @@ function App() {
     setCartItems((prevItems) => prevItems.filter((item) => item.bundle.id !== bundleId));
   };
 
+  const handleOpenAdminTrigger = () => {
+    if (isAdminAuthenticated) {
+      setCurrentView('admin');
+    } else {
+      setIsAdminLoginOpen(true);
+    }
+  };
+
+  const handleAdminLoginSuccess = () => {
+    setIsAdminAuthenticated(true);
+    setIsAdminLoginOpen(false);
+    setCurrentView('admin');
+  };
+
+  const handleUpdateOrderStatus = (orderId: string, status: OrderStatus, trackingNumber?: string) => {
+    setOrders(prev => prev.map(ord => {
+      if (ord.id === orderId) {
+        return {
+          ...ord,
+          status,
+          trackingNumber: trackingNumber || ord.trackingNumber
+        };
+      }
+      return ord;
+    }));
+  };
+
   const totalCartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+  if (currentView === 'admin' && isAdminAuthenticated) {
+    return (
+      <AdminPanel
+        onReturnToStore={() => setCurrentView('store')}
+        bundles={bundles}
+        onUpdateBundles={setBundles}
+        orders={orders}
+        onUpdateOrderStatus={handleUpdateOrderStatus}
+        customers={customers}
+        reviews={reviewsList}
+        onUpdateReviews={setReviewsList}
+        coupons={coupons}
+        onUpdateCoupons={setCoupons}
+        settings={settings}
+        onUpdateSettings={setSettings}
+      />
+    );
+  }
 
   return (
     <>
@@ -97,6 +215,7 @@ function App() {
         cartCount={totalCartCount}
         onOpenCart={() => setIsCartOpen(true)}
         onQuickBuy={handleQuickBuy}
+        onOpenAdmin={handleOpenAdminTrigger}
       />
 
       <main>
@@ -113,10 +232,10 @@ function App() {
         <BrandStory />
         <DetailsGrid />
         <Comparison />
-        <Reviews />
+        <Reviews reviewsList={reviewsList} />
       </main>
 
-      <Footer />
+      <Footer onOpenAdmin={handleOpenAdminTrigger} />
 
       <CartDrawer 
         isOpen={isCartOpen}
@@ -124,6 +243,13 @@ function App() {
         items={cartItems}
         onUpdateQty={handleUpdateQty}
         onRemoveItem={handleRemoveItem}
+        onPlaceOrder={(newOrder) => setOrders(prev => [newOrder, ...prev])}
+      />
+
+      <AdminLoginModal
+        isOpen={isAdminLoginOpen}
+        onClose={() => setIsAdminLoginOpen(false)}
+        onLoginSuccess={handleAdminLoginSuccess}
       />
     </>
   );

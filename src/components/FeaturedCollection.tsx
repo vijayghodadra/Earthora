@@ -137,13 +137,6 @@ const FeaturedCollection = ({ onAddToCart, onBuyNow, productsList }: FeaturedCol
           ))}
         </div>
 
-        <div className="collection-footer">
-          <div className="footer-left">
-            <div className="footer-line"></div>
-            <p>{totalCount} pieces. Chosen with intention.</p>
-          </div>
-          <button className="footer-btn">EXPLORE THE COLLECTION <MoveRight strokeWidth={1} size={32} /></button>
-        </div>
       </section>
 
       {selectedProduct && (

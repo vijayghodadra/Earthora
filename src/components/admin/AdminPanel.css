@@ -1199,3 +1199,37 @@
   .admin-main-wrapper { margin-left: 0; }
   .kpi-grid { grid-template-columns: 1fr; }
 }
+
+/* Image Upload Dropzone Enhancements */
+.image-upload-box {
+  width: 100%;
+  border-radius: 12px;
+  background-color: var(--admin-input-bg);
+  transition: all 0.2s ease-in-out;
+}
+
+.image-upload-box.drag-active {
+  border-color: var(--admin-gold) !important;
+  background-color: var(--admin-gold-bg) !important;
+  transform: scale(1.01);
+}
+
+.upload-dropzone {
+  border: 2px dashed var(--admin-border);
+  border-radius: 12px;
+  padding: 1.75rem 1rem;
+  transition: all 0.2s ease;
+  background-color: var(--admin-card-bg);
+}
+
+.upload-dropzone:hover {
+  border-color: var(--admin-gold);
+  background-color: var(--admin-gold-bg);
+}
+
+.admin-input:focus {
+  outline: none;
+  border-color: var(--admin-gold) !important;
+  box-shadow: 0 0 0 3px var(--admin-gold-glow) !important;
+}
+

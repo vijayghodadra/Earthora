@@ -7,8 +7,6 @@ import Hero from './components/Hero';
 import TrustBar from './components/TrustBar';
 import FeaturedCollection from './components/FeaturedCollection';
 import Benefits from './components/Benefits';
-import BrandStory from './components/BrandStory';
-import DetailsGrid from './components/DetailsGrid';
 import Comparison from './components/Comparison';
 import Reviews from './components/Reviews';
 import CartDrawer from './components/CartDrawer';
@@ -246,8 +244,6 @@ function App() {
           onBuyNow={handleBuyNow}
           productsList={bundles}
         />
-        <BrandStory />
-        <DetailsGrid />
         <Comparison />
         <Reviews reviewsList={reviewsList} />
       </main>

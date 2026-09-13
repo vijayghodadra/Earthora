@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { MoveRight, Plus } from 'lucide-react';
 import ProductModal from './ProductModal.tsx';
+import type { ProductBundle } from '../data/productData';
 import './FeaturedCollection.css';
 
 import img1 from '../assets/images (1).jpg';
@@ -10,7 +11,7 @@ import img3 from '../assets/images (4).jpg';
 import img4 from '../assets/images (3).jpg';
 import img5 from '../assets/images6.jpg';
 
-const products = [
+const defaultProducts = [
   {
     id: 'product-1',
     name: 'UBTAN FACE WASH',
@@ -61,10 +62,27 @@ const products = [
 interface FeaturedCollectionProps {
   onAddToCart?: (bundle: any, quantity: number) => void;
   onBuyNow?: (bundle: any, quantity: number) => void;
+  productsList?: ProductBundle[];
 }
 
-const FeaturedCollection = ({ onAddToCart, onBuyNow }: FeaturedCollectionProps) => {
+const FeaturedCollection = ({ onAddToCart, onBuyNow, productsList }: FeaturedCollectionProps) => {
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
+
+  const displayProducts = (productsList && productsList.length > 0)
+    ? productsList.map((item, index) => ({
+        id: item.id,
+        name: item.name.toUpperCase(),
+        category: item.badge || 'BOTANICAL CARE',
+        desc: `${item.size || 'Natural Formula'}\nFormulated for pure radiance & glow.`,
+        price: `₹${item.price}`,
+        originalPrice: `₹${item.originalPrice || Math.round(item.price * 1.3)}`,
+        image: item.image || img1,
+        className: `item-${(index % 5) + 1}`,
+        rawBundle: item
+      }))
+    : defaultProducts.map(p => ({ ...p, rawBundle: p }));
+
+  const totalCount = displayProducts.length;
 
   return (
     <>
@@ -74,10 +92,10 @@ const FeaturedCollection = ({ onAddToCart, onBuyNow }: FeaturedCollectionProps) 
           <div className="intro-block">
             <div className="intro-eyebrow">THE COLLECTION</div>
             <h2 className="intro-title">Selected<br/>Pieces</h2>
-            <p className="intro-desc">Five exceptional pieces.<br/>One uncompromising<br/>standard of luxury.</p>
+            <p className="intro-desc">{totalCount} exceptional pieces.<br/>One uncompromising<br/>standard of luxury.</p>
           </div>
 
-          {products.map((product, index) => (
+          {displayProducts.map((product, index) => (
             <motion.div 
               key={product.id} 
               className={`product-card ${product.className}`}
@@ -89,9 +107,9 @@ const FeaturedCollection = ({ onAddToCart, onBuyNow }: FeaturedCollectionProps) 
             >
               <div className="card-top">
                 <div className="card-number">
-                  <span>0{index + 1}</span>
+                  <span>{String(index + 1).padStart(2, '0')}</span>
                   <span className="divider">/</span>
-                  <span>05</span>
+                  <span>{String(totalCount).padStart(2, '0')}</span>
                 </div>
                 <div className="card-image-wrapper">
                   <img src={product.image} alt={product.name} loading="lazy" />
@@ -122,7 +140,7 @@ const FeaturedCollection = ({ onAddToCart, onBuyNow }: FeaturedCollectionProps) 
         <div className="collection-footer">
           <div className="footer-left">
             <div className="footer-line"></div>
-            <p>Five pieces. Chosen with intention.</p>
+            <p>{totalCount} pieces. Chosen with intention.</p>
           </div>
           <button className="footer-btn">EXPLORE THE COLLECTION <MoveRight strokeWidth={1} size={32} /></button>
         </div>

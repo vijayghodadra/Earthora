@@ -13,9 +13,10 @@ import img5 from '../assets/images6.jpg';
 interface HeroProps {
   onAddToCart: (bundle: ProductBundle, quantity: number) => void;
   onBuyNow: (bundle: ProductBundle, quantity: number) => void;
+  productsList?: ProductBundle[];
 }
 
-const heroProducts = [
+const defaultHeroProducts = [
   {
     id: 'product-1',
     name: 'Mamaearth Ubtan Natural Face Wash',
@@ -83,17 +84,36 @@ const heroProducts = [
   }
 ];
 
-const Hero = ({ onAddToCart, onBuyNow }: HeroProps) => {
+const Hero = ({ onAddToCart, onBuyNow, productsList }: HeroProps) => {
   const [activeProductIndex, setActiveProductIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const activeProduct = heroProducts[activeProductIndex] || heroProducts[0];
+  // Map dynamic products from props or fallback to default
+  const activeProducts = (productsList && productsList.length > 0)
+    ? productsList.map(item => ({
+        id: item.id,
+        name: item.name,
+        category: item.badge || 'BOTANICAL CARE & RADIANCE',
+        tagline: 'Formulated for natural skin radiance and gentle daily nourishment.',
+        price: item.price,
+        originalPrice: item.originalPrice || Math.round(item.price * 1.3),
+        discount: item.discount || 'Special Offer',
+        size: item.size || '50ml • Free Shipping',
+        rating: 4.9,
+        reviewCount: 1250,
+        image: item.image || img1,
+        rawBundle: item
+      }))
+    : defaultHeroProducts.map(item => ({ ...item, rawBundle: item as unknown as ProductBundle }));
+
+  const safeIndex = activeProductIndex < activeProducts.length ? activeProductIndex : 0;
+  const activeProduct = activeProducts[safeIndex] || activeProducts[0];
 
   const incrementQty = () => setQuantity((prev) => prev + 1);
   const decrementQty = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
 
-  const currentBundle: ProductBundle = {
+  const currentBundle: ProductBundle = activeProduct.rawBundle || {
     id: activeProduct.id,
     name: activeProduct.name,
     size: activeProduct.size,
@@ -136,7 +156,7 @@ const Hero = ({ onAddToCart, onBuyNow }: HeroProps) => {
             <span className="badge-featured">FLAGSHIP FORMULA</span>
             <AnimatePresence mode="wait">
               <motion.img 
-                key={activeProductIndex}
+                key={safeIndex}
                 src={activeProduct.image} 
                 alt={activeProduct.name}
                 className="main-product-img"
@@ -150,10 +170,10 @@ const Hero = ({ onAddToCart, onBuyNow }: HeroProps) => {
 
           {/* Gallery Thumbnails */}
           <div className="gallery-thumbnails">
-            {heroProducts.map((prod, idx) => (
+            {activeProducts.map((prod, idx) => (
               <button
                 key={prod.id}
-                className={`thumbnail-btn ${activeProductIndex === idx ? 'active' : ''}`}
+                className={`thumbnail-btn ${safeIndex === idx ? 'active' : ''}`}
                 onClick={() => setActiveProductIndex(idx)}
                 aria-label={`Select product ${prod.name}`}
               >
@@ -198,7 +218,7 @@ const Hero = ({ onAddToCart, onBuyNow }: HeroProps) => {
 
               <p className="hero-description">{activeProduct.tagline}</p>
 
-              {/* SIMPLE PRICE & DISCOUNT BOX (No 1 Month / 2 Month supply packages) */}
+              {/* PRICE & DISCOUNT BOX */}
               <div className="hero-simple-price-card">
                 <div className="price-left-stack">
                   <span className="hero-current-price">₹{activeProduct.price.toLocaleString()}</span>

@@ -237,12 +237,14 @@ function App() {
         <Hero 
           onAddToCart={handleAddToCart}
           onBuyNow={handleBuyNow}
+          productsList={bundles}
         />
         <TrustBar />
         <Benefits />
         <FeaturedCollection 
           onAddToCart={handleAddToCart}
           onBuyNow={handleBuyNow}
+          productsList={bundles}
         />
         <BrandStory />
         <DetailsGrid />

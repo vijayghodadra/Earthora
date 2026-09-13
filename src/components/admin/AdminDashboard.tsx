@@ -6,16 +6,11 @@ import {
   Users, 
   DollarSign, 
   ArrowUpRight, 
-  Package, 
-  CheckCircle, 
-  Clock, 
   Plus,
-  Percent,
   RefreshCw
 } from 'lucide-react';
 import type { CustomerOrder, CustomerProfile } from '../../types/adminTypes';
 import type { ProductBundle } from '../../data/productData';
-import { monthlySalesData } from '../../data/adminData';
 
 interface AdminDashboardProps {
   orders: CustomerOrder[];
@@ -34,9 +29,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const totalRevenue = orders.reduce((sum, ord) => sum + ord.total, 0) + 895000;
   const totalOrdersCount = orders.length + 250;
   const pendingOrders = orders.filter(o => o.status === 'Pending' || o.status === 'Processing');
-
-  // Max value for revenue SVG bar chart
-  const maxRevenue = Math.max(...monthlySalesData.map((d: { revenue: number }) => d.revenue));
 
   return (
     <div className="admin-dashboard-view">
@@ -135,84 +127,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         </motion.div>
       </div>
 
-      {/* Main Grid: Chart & Quick Actions */}
-      <div className="admin-two-col-grid">
-        {/* Sales Trend Chart */}
-        <div className="admin-card">
-          <div className="admin-card-header">
-            <div>
-              <h3 className="admin-card-title">Monthly Revenue Growth (INR)</h3>
-              <p className="admin-card-desc">Gross sales overview across recent operating quarters</p>
-            </div>
-            <span className="gold-tag font-mono">FY 2026</span>
-          </div>
-          <div className="admin-chart-container">
-            <div className="chart-bars-wrap">
-              {monthlySalesData.map((d: { month: string; revenue: number; orders: number }, index: number) => {
-                const heightPercent = Math.round((d.revenue / maxRevenue) * 100);
-                return (
-                  <div key={d.month} className="chart-bar-column">
-                    <div className="bar-tooltip">₹{(d.revenue / 1000).toFixed(0)}k ({d.orders} orders)</div>
-                    <div className="bar-track">
-                      <motion.div 
-                        className="bar-fill"
-                        initial={{ height: 0 }}
-                        animate={{ height: `${heightPercent}%` }}
-                        transition={{ duration: 0.6, delay: index * 0.08 }}
-                      />
-                    </div>
-                    <span className="bar-label">{d.month}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        {/* Quick Actions & Store Status */}
-        <div className="admin-card">
-          <div className="admin-card-header">
-            <h3 className="admin-card-title">Quick Management Actions</h3>
-          </div>
-          <div className="quick-actions-list">
-            <button className="quick-action-item" onClick={() => onNavigateTab('products')}>
-              <div className="action-icon gold"><Package size={18} /></div>
-              <div className="action-text">
-                <span className="action-title">Adjust Bundle Pricing</span>
-                <span className="action-desc">Update sizes, discount badges & prices</span>
-              </div>
-              <ArrowUpRight size={16} className="action-arrow" />
-            </button>
-
-            <button className="quick-action-item" onClick={() => onNavigateTab('orders')}>
-              <div className="action-icon emerald"><Clock size={18} /></div>
-              <div className="action-text">
-                <span className="action-title">Pending Orders ({pendingOrders.length})</span>
-                <span className="action-desc">Update shipping status & dispatch codes</span>
-              </div>
-              <ArrowUpRight size={16} className="action-arrow" />
-            </button>
-
-            <button className="quick-action-item" onClick={() => onNavigateTab('coupons')}>
-              <div className="action-icon purple"><Percent size={18} /></div>
-              <div className="action-text">
-                <span className="action-title">Generate Discount Code</span>
-                <span className="action-desc">Create seasonal promo codes & limit caps</span>
-              </div>
-              <ArrowUpRight size={16} className="action-arrow" />
-            </button>
-
-            <button className="quick-action-item" onClick={() => onNavigateTab('reviews')}>
-              <div className="action-icon blue"><CheckCircle size={18} /></div>
-              <div className="action-text">
-                <span className="action-title">Review Moderation</span>
-                <span className="action-desc">Approve or reply to verified customer feedback</span>
-              </div>
-              <ArrowUpRight size={16} className="action-arrow" />
-            </button>
-          </div>
-        </div>
-      </div>
+      {/* Recent Orders Overview Table */}
 
       {/* Recent Orders Overview Table */}
       <div className="admin-card margin-top-lg">

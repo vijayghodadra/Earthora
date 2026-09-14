@@ -106,28 +106,34 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         {/* Top Header Bar */}
         <header className="admin-top-bar">
           <div className="top-bar-left">
+            <img src={logoImg} alt="EarthOra" className="brand-logo-img mobile-topbar-logo" />
+            <button className="store-return-pill" onClick={onReturnToStore} title="Return to Storefront">
+              <ArrowLeft size={14} />
+              <span>Return to Store</span>
+            </button>
             <span className="live-status-pill">
-              <span className="live-pulse" /> Storefront Live & Operational
+              <span className="live-pulse" /> Live & Operational
             </span>
           </div>
 
           <div className="top-bar-right">
             {/* Theme Toggle Button */}
             <button 
-              className="top-bar-btn theme-toggle-btn"
+              className="top-bar-action-btn theme-toggle-btn"
               onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
               title={`Switch to ${theme === 'light' ? 'Dark' : 'White'} Theme`}
             >
-              {theme === 'light' ? <Moon size={18} className="text-gold" /> : <Sun size={18} className="text-gold" />}
+              {theme === 'light' ? <Moon size={16} className="text-gold" /> : <Sun size={16} className="text-gold" />}
             </button>
 
             <div className="notification-wrapper">
               <button 
-                className="top-bar-btn" 
+                className="top-bar-action-btn" 
                 onClick={() => setNotificationsOpen(!notificationsOpen)}
                 aria-label="Notifications"
+                title="Notifications & Alerts"
               >
-                <Bell size={18} />
+                <Bell size={16} />
                 {pendingOrdersCount > 0 && <span className="notif-badge">{pendingOrdersCount}</span>}
               </button>
 
@@ -169,11 +175,30 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               </div>
             </div>
 
-            <button className="top-bar-btn text-gold" onClick={onReturnToStore} title="Exit Portal">
-              <LogOut size={18} />
+            <button className="top-bar-action-btn exit-portal-btn text-gold" onClick={onReturnToStore} title="Exit Executive Portal">
+              <LogOut size={16} />
             </button>
           </div>
         </header>
+
+        {/* Mobile Horizontally Scrollable Tab Navigation */}
+        <nav className="admin-mobile-tab-bar">
+          {sidebarNavItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = activeTab === item.id;
+            return (
+              <button
+                key={item.id}
+                className={`mobile-tab-chip ${isActive ? 'active' : ''}`}
+                onClick={() => setActiveTab(item.id)}
+              >
+                <Icon size={16} />
+                <span>{item.label}</span>
+                {item.badge && <span className="mobile-chip-badge">{item.badge}</span>}
+              </button>
+            );
+          })}
+        </nav>
 
         {/* View Component Switcher */}
         <div className="admin-content-body">

@@ -7,59 +7,66 @@ interface FooterProps {
 }
 
 const Footer = ({ onOpenAdmin }: FooterProps) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const targetEl = document.querySelector(href);
+    if (targetEl) {
+      targetEl.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <footer className="footer">
       <div className="section-container">
         
         <div className="footer-top">
           <div className="footer-brand-col">
-            <a href="#hero" className="footer-logo">
-              <img src={logoImg} alt="EarthOra" className="brand-logo-img footer-logo-img" />
+            <a href="#hero" onClick={(e) => handleNavClick(e, '#hero')} className="footer-logo">
+              <div className="footer-logo-badge">
+                <img src={logoImg} alt="EarthOra" className="footer-logo-img" />
+              </div>
             </a>
             <p className="footer-tagline">
-              Curated botanical wellness. Crafted with uncompromising standards for those who value elegance and distinction.
+              Premium Organic Haircare & Botanical Wellness. Formulated with 100% pure Ayurvedic extracts for timeless hair vitality.
             </p>
           </div>
 
           <div className="footer-links-grid">
             <div className="footer-col">
               <div className="footer-col-title">Navigation</div>
-              <a href="#hero">Overview</a>
-              <a href="#benefits">Benefits</a>
-              <a href="#formula">Formula Details</a>
-              <a href="#routine">Daily Ritual</a>
+              <a href="#hero" onClick={(e) => handleNavClick(e, '#hero')}>Home</a>
+              <a href="#collection" onClick={(e) => handleNavClick(e, '#collection')}>Our Collections</a>
+              <a href="#benefits" onClick={(e) => handleNavClick(e, '#benefits')}>Key Benefits</a>
+              <a href="#story" onClick={(e) => handleNavClick(e, '#story')}>Brand Story</a>
+              <a href="#reviews" onClick={(e) => handleNavClick(e, '#reviews')}>Customer Reviews</a>
             </div>
 
             <div className="footer-col">
-              <div className="footer-col-title">Social & Journal</div>
-              <a href="#">Instagram</a>
-              <a href="#">Pinterest</a>
-              <a href="#">Ayurvedic Journal</a>
-              <a href="#">Press Enquiries</a>
+              <div className="footer-col-title">Product & Care</div>
+              <a href="#usage" onClick={(e) => handleNavClick(e, '#usage')}>How To Use</a>
+              <a href="#comparison" onClick={(e) => handleNavClick(e, '#comparison')}>Why EarthOra</a>
+              <a href="#details" onClick={(e) => handleNavClick(e, '#details')}>Formula Ingredients</a>
+              <a href="#faq" onClick={(e) => handleNavClick(e, '#faq')}>FAQ & Support</a>
             </div>
 
             <div className="footer-col">
-              <div className="footer-col-title">Customer Care</div>
-              <a href="#faq">Shipping & Returns</a>
-              <a href="#faq">Track Your Order</a>
+              <div className="footer-col-title">Executive & Admin</div>
               {onOpenAdmin && (
                 <button 
                   className="footer-admin-btn"
                   onClick={onOpenAdmin}
                 >
-                  <ShieldCheck size={14} /> Executive Admin Portal
+                  <ShieldCheck size={16} /> Executive Admin Portal
                 </button>
               )}
-              <a href="#faq">Privacy Policy</a>
-              <a href="#faq">Terms of Service</a>
             </div>
           </div>
         </div>
 
         <div className="footer-bottom">
-          <div>&copy; {new Date().getFullYear()} Earthora Luxury Botanical Care. All rights reserved.</div>
+          <div>&copy; {new Date().getFullYear()} EarthOra Luxury Botanical Care. All rights reserved.</div>
           <div className="footer-trust-notes">
-            <span>GMP Certified</span> • <span>Dermatologically Tested</span> • <span>Cruelty Free</span>
+            <span>GMP Certified</span> • <span>Dermatologically Tested</span> • <span>100% Vegan</span>
           </div>
         </div>
 

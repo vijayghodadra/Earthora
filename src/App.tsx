@@ -9,6 +9,7 @@ import FeaturedCollection from './components/FeaturedCollection';
 import Benefits from './components/Benefits';
 import Comparison from './components/Comparison';
 import Reviews from './components/Reviews';
+import BrandStory from './components/BrandStory';
 import CartDrawer from './components/CartDrawer';
 import type { CartItem } from './components/CartDrawer';
 import Footer from './components/Footer';
@@ -70,7 +71,15 @@ function App() {
   useEffect(() => {
     if (isSupabaseConfigured) {
       supabaseDb.getOrders().then(data => data && setOrders(data));
-      supabaseDb.getProducts().then(data => data && setBundles(data));
+      supabaseDb.getProducts().then(data => {
+        if (data && data.length > 0) {
+          setBundles(data);
+          localStorage.setItem('earthora_bundles', JSON.stringify(data));
+        } else if (data && data.length === 0) {
+          // If Supabase products table is empty, seed it with current bundles
+          supabaseDb.syncProducts(bundles);
+        }
+      });
       supabaseDb.getReviews().then(data => data && setReviewsList(data));
     }
   }, []);
@@ -78,7 +87,9 @@ function App() {
   // Sync state changes with localStorage & Supabase
   useEffect(() => {
     localStorage.setItem('earthora_bundles', JSON.stringify(bundles));
-    if (isSupabaseConfigured) supabaseDb.saveProducts(bundles);
+    if (isSupabaseConfigured) {
+      supabaseDb.syncProducts(bundles);
+    }
   }, [bundles]);
 
   useEffect(() => {
@@ -246,6 +257,7 @@ function App() {
         />
         <Comparison />
         <Reviews reviewsList={reviewsList} />
+        <BrandStory />
       </main>
 
       <Footer onOpenAdmin={handleOpenAdminTrigger} />

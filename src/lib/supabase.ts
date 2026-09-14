@@ -78,9 +78,35 @@ export const supabaseDb = {
     }
   },
 
-  async saveProducts(bundles: ProductBundle[]): Promise<boolean> {
+  async deleteProduct(id: string): Promise<boolean> {
     if (!isSupabaseConfigured) return false;
     try {
+      const { error } = await supabase.from('products').delete().eq('id', id);
+      if (error) console.warn('Supabase deleteProduct warning:', error.message);
+      return !error;
+    } catch (e) {
+      console.warn('Supabase deleteProduct catch:', e);
+      return false;
+    }
+  },
+
+  async syncProducts(bundles: ProductBundle[]): Promise<boolean> {
+    if (!isSupabaseConfigured) return false;
+    try {
+      const currentIds = bundles.map(b => b.id);
+      
+      // Delete any products in Supabase that are no longer present in local bundles list
+      const { data: existing } = await supabase.from('products').select('id');
+      if (existing && existing.length > 0) {
+        const idsToDelete = existing
+          .map((r: any) => r.id)
+          .filter((id: string) => !currentIds.includes(id));
+          
+        if (idsToDelete.length > 0) {
+          await supabase.from('products').delete().in('id', idsToDelete);
+        }
+      }
+
       const formatted = bundles.map(b => ({
         id: b.id,
         name: b.name,
@@ -95,8 +121,13 @@ export const supabaseDb = {
       const { error } = await supabase.from('products').upsert(formatted);
       return !error;
     } catch (e) {
+      console.warn('Supabase syncProducts catch:', e);
       return false;
     }
+  },
+
+  async saveProducts(bundles: ProductBundle[]): Promise<boolean> {
+    return this.syncProducts(bundles);
   },
 
   // Reviews

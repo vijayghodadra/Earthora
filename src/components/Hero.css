@@ -1,14 +1,14 @@
 .hero-section {
-  padding-top: 5.5rem;
-  padding-bottom: 3rem;
+  padding-top: 4.5rem;
+  padding-bottom: 2.5rem;
   background: radial-gradient(circle at 50% 20%, rgba(59, 78, 50, 0.07) 0%, transparent 50%),
               var(--bg-dark);
 }
 
 @media (min-width: 768px) {
   .hero-section {
-    padding-top: 7.5rem;
-    padding-bottom: 4rem;
+    padding-top: 5.5rem;
+    padding-bottom: 3rem;
   }
 }
 
@@ -21,8 +21,11 @@
 
 @media (min-width: 992px) {
   .hero-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    grid-template-columns: 460px 1fr;
+    gap: 3.5rem;
+    align-items: center;
+    max-width: 1120px;
+    margin: 0 auto;
   }
 }
 
@@ -32,55 +35,57 @@
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  width: 100%;
 }
 
 .main-image-container {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 4.2;
-  background: linear-gradient(145deg, #f2f6f0 0%, #e6ede0 100%);
+  max-width: 440px;
+  max-height: 440px;
+  aspect-ratio: 1 / 1;
+  background: #ffffff;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  border: 1px solid rgba(59, 78, 50, 0.18);
-  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(59, 78, 50, 0.12);
+  box-shadow: 0 12px 35px rgba(59, 78, 50, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: 0.5rem;
+  margin: 0 auto;
 }
 
 @media (min-width: 768px) {
   .main-image-container {
-    aspect-ratio: 4 / 4.5;
     border-radius: var(--radius-xl);
-    padding: 1.5rem;
+    padding: 0.75rem;
   }
 }
 
 .badge-featured {
   position: absolute;
-  top: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 0.85rem;
+  left: 0.85rem;
   z-index: 2;
   font-family: var(--font-ui);
   font-size: 0.6rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  padding: 0.35rem 0.85rem;
-  border-radius: var(--radius-sm);
+  letter-spacing: 0.14em;
+  padding: 0.3rem 0.75rem;
+  border-radius: 20px;
   background: var(--accent-olive);
   color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 12px rgba(59, 78, 50, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 12px rgba(59, 78, 50, 0.2);
 }
 
 .main-product-img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 15px 25px rgba(59, 78, 50, 0.15));
-  transition: transform 0.5s ease;
+  border-radius: var(--radius-md);
+  transition: transform 0.4s ease;
 }
 
 .main-image-container:hover .main-product-img {
@@ -103,13 +108,13 @@
 }
 
 .thumbnail-btn {
-  width: 68px;
-  height: 68px;
+  width: 60px;
+  height: 60px;
   border-radius: var(--radius-md);
-  background: #edf1ea;
-  border: 2px solid rgba(59, 78, 50, 0.18);
+  background: #ffffff;
+  border: 1.5px solid rgba(59, 78, 50, 0.12);
   overflow: hidden;
-  padding: 0.3rem;
+  padding: 0.25rem;
   flex-shrink: 0;
   cursor: pointer;
   transition: var(--transition-smooth);
@@ -117,9 +122,9 @@
 
 @media (min-width: 640px) {
   .thumbnail-btn {
-    width: 76px;
-    height: 76px;
-    padding: 0.4rem;
+    width: 64px;
+    height: 64px;
+    padding: 0.3rem;
   }
 }
 
@@ -177,7 +182,65 @@
 
 @media (min-width: 992px) {
   .hero-product-title {
-    font-size: 2.7rem;
+    font-size: 2.2rem;
+    text-align: left;
+  }
+}
+
+@media (min-width: 992px) {
+  .hero-content-col {
+    align-items: flex-start;
+    text-align: left;
+    max-width: 540px;
+  }
+
+  .hero-details-container {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .hero-rating-bar {
+    justify-content: flex-start;
+    margin-bottom: 0.85rem;
+  }
+
+  .hero-description {
+    text-align: left;
+    font-size: 0.95rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    max-width: 480px;
+  }
+
+  .hero-simple-price-card {
+    max-width: 460px;
+    padding: 0.9rem 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .cta-purchase-container {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.85rem;
+    max-width: 460px;
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-trust-checklist {
+    align-items: flex-start;
+    text-align: left;
+    max-width: 460px;
+  }
+
+  .trust-item {
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .thumbnail-btn {
+    width: 62px;
+    height: 62px;
+    padding: 0.25rem;
   }
 }
 
@@ -413,49 +476,101 @@
 }
 
 @media (max-width: 640px) {
+  .hero-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+  }
+
   .hero-grid {
-    grid-template-columns: 1fr;
-    gap: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    width: 100%;
+    margin: 0 auto;
   }
 
   .hero-media-col, .hero-content-col {
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     text-align: center;
     width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
   }
 
   .main-image-container {
     aspect-ratio: 1 / 1;
-    max-height: 340px;
+    max-height: 320px;
     margin: 0 auto;
+    width: 100%;
+    max-width: 360px;
   }
 
   .gallery-thumbnails {
     width: 100%;
+    max-width: 100%;
+    display: flex;
     justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+    margin: 0 auto;
+    overflow-x: auto;
+  }
+
+  .hero-details-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .hero-simple-price-card {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem;
+    width: 100%;
+    margin: 0 auto 1.25rem auto;
   }
 }
 
 @media (max-width: 480px) {
   .hero-section {
     padding-top: 4.8rem;
-    padding-bottom: 2.2rem;
+    padding-bottom: 2rem;
   }
 
   .main-image-container {
     aspect-ratio: 1 / 1;
-    max-height: 300px;
+    max-height: 280px;
     padding: 0.75rem;
+    max-width: 300px;
   }
 
   .hero-product-title {
-    font-size: 1.5rem;
+    font-size: clamp(1.35rem, 5.5vw, 1.85rem);
     line-height: 1.25;
+    text-align: center;
   }
 
   .hero-description {
     font-size: 0.88rem;
     line-height: 1.5;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    text-align: center;
   }
 
   .hero-simple-price-card {
@@ -466,19 +581,25 @@
   }
 
   .thumbnail-btn {
-    width: 58px;
-    height: 58px;
+    width: 50px;
+    height: 50px;
     padding: 0.2rem;
   }
 
   .cta-buttons-row {
     flex-direction: column;
     width: 100%;
+    align-items: center;
   }
 
   .add-cart-btn, .buy-now-btn {
     min-height: 48px;
     font-size: 0.92rem;
     width: 100%;
+  }
+
+  .price-left-stack {
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Package, Plus, Edit2, Trash2, Check, X, Sparkles, Upload } from 'lucide-react';
 import type { ProductBundle } from '../../data/productData';
+import { supabaseDb, isSupabaseConfigured } from '../../lib/supabase';
 
 interface AdminProductsProps {
   bundles: ProductBundle[];
@@ -118,7 +119,7 @@ export const AdminProducts: React.FC<AdminProductsProps> = ({ bundles, onUpdateB
     setEditForm({ ...bundle });
   };
 
-  const handleSaveEdit = () => {
+  const handleSaveEdit = async () => {
     if (!editingId) return;
     if (!editForm.name || !editForm.price) {
       alert("Please fill in the product title and sale price.");
@@ -126,23 +127,33 @@ export const AdminProducts: React.FC<AdminProductsProps> = ({ bundles, onUpdateB
     }
     const updated = bundles.map(b => b.id === editingId ? { ...b, ...editForm } as ProductBundle : b);
     onUpdateBundles(updated);
+    localStorage.setItem('earthora_bundles', JSON.stringify(updated));
+    if (isSupabaseConfigured) {
+      await supabaseDb.syncProducts(updated);
+    }
     setEditingId(null);
     setEditForm({});
     showNotification("Product updated successfully!");
   };
 
-  const handleDeleteBundle = (id: string) => {
+  const handleDeleteBundle = async (id: string) => {
     if (bundles.length <= 1) {
       alert("Store must have at least one product bundle available.");
       return;
     }
     if (window.confirm("Are you sure you want to delete this product?")) {
-      onUpdateBundles(bundles.filter(b => b.id !== id));
+      const updated = bundles.filter(b => b.id !== id);
+      onUpdateBundles(updated);
+      localStorage.setItem('earthora_bundles', JSON.stringify(updated));
+      if (isSupabaseConfigured) {
+        await supabaseDb.deleteProduct(id);
+        await supabaseDb.syncProducts(updated);
+      }
       showNotification("Product deleted successfully!");
     }
   };
 
-  const handleSaveNewBundle = () => {
+  const handleSaveNewBundle = async () => {
     if (!newForm.name || newForm.price === undefined || newForm.price <= 0) {
       alert("Please enter a valid Product Title and Sale Price.");
       return;
@@ -168,7 +179,12 @@ export const AdminProducts: React.FC<AdminProductsProps> = ({ bundles, onUpdateB
       image: newForm.image || bundles[0]?.image || ''
     };
 
-    onUpdateBundles([...bundles, created]);
+    const updated = [...bundles, created];
+    onUpdateBundles(updated);
+    localStorage.setItem('earthora_bundles', JSON.stringify(updated));
+    if (isSupabaseConfigured) {
+      await supabaseDb.syncProducts(updated);
+    }
     setIsAddingNew(false);
     setNewForm(initialNewFormState);
     showNotification(`New product "${created.name}" added successfully!`);

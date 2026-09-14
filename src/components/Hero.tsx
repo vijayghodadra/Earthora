@@ -148,12 +148,11 @@ const Hero = ({ onAddToCart, onBuyNow, productsList }: HeroProps) => {
         {/* Left Column - Image Gallery */}
         <motion.div 
           className="hero-media-col"
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="main-image-container">
-            <span className="badge-featured">FLAGSHIP FORMULA</span>
             <AnimatePresence mode="wait">
               <motion.img 
                 key={safeIndex}
@@ -186,9 +185,9 @@ const Hero = ({ onAddToCart, onBuyNow, productsList }: HeroProps) => {
         {/* Right Column - Dynamic Product Details Panel */}
         <motion.div 
           className="hero-content-col"
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
         >
           <AnimatePresence mode="wait">
             <motion.div 

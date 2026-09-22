@@ -247,6 +247,9 @@ const ProductModal = ({
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           onClick={(e) => e.stopPropagation()}
         >
+          {/* Mobile Sheet Pull Indicator */}
+          <div className="modal-sheet-handle" aria-hidden="true"></div>
+
           <button className="modal-close" onClick={onClose} aria-label="Close modal">
             <X size={20} />
           </button>

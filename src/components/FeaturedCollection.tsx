@@ -59,6 +59,8 @@ const defaultProducts = [
   }
 ];
 
+import { getProductModalData } from '../data/productData';
+
 interface FeaturedCollectionProps {
   onAddToCart?: (bundle: any, quantity: number) => void;
   onBuyNow?: (bundle: any, quantity: number) => void;
@@ -69,18 +71,25 @@ const FeaturedCollection = ({ onAddToCart, onBuyNow, productsList }: FeaturedCol
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
 
   const displayProducts = (productsList && productsList.length > 0)
-    ? productsList.map((item, index) => ({
-        id: item.id,
-        name: item.name.toUpperCase(),
-        category: item.badge || 'BOTANICAL CARE',
-        desc: `${item.size || 'Natural Formula'}\nFormulated for pure radiance & glow.`,
-        price: `₹${item.price}`,
-        originalPrice: `₹${item.originalPrice || Math.round(item.price * 1.3)}`,
-        image: item.image || img1,
-        className: `item-${(index % 5) + 1}`,
-        rawBundle: item
-      }))
-    : defaultProducts.map(p => ({ ...p, rawBundle: p }));
+    ? productsList.map((item, index) => {
+        const modalData = getProductModalData(item);
+        return {
+          ...modalData,
+          id: item.id,
+          name: item.name.toUpperCase(),
+          className: `item-${(index % 5) + 1}`,
+          rawBundle: item
+        };
+      })
+    : defaultProducts.map((p, index) => {
+        const modalData = getProductModalData(p);
+        return {
+          ...modalData,
+          ...p,
+          className: `item-${(index % 5) + 1}`,
+          rawBundle: p
+        };
+      });
 
   const totalCount = displayProducts.length;
 
@@ -142,6 +151,8 @@ const FeaturedCollection = ({ onAddToCart, onBuyNow, productsList }: FeaturedCol
       {selectedProduct && (
         <ProductModal 
           product={selectedProduct} 
+          allProducts={displayProducts}
+          onSelectProduct={(p) => setSelectedProduct(p)}
           onClose={() => setSelectedProduct(null)} 
           onAddToCart={onAddToCart}
           onBuyNow={onBuyNow}

@@ -1,7 +1,7 @@
 import img1 from '../assets/images (1).jpg';
 import img2 from '../assets/images (2).jpg';
-import img3 from '../assets/images (3).jpg';
-import img4 from '../assets/images (4).jpg';
+import img3 from '../assets/images (4).jpg'; // Neutrogena
+import img4 from '../assets/images (3).jpg'; // Cetaphil
 import img5 from '../assets/images6.jpg';
 
 export interface ProductBundle {
@@ -39,6 +39,458 @@ export interface FAQItem {
   id: number;
   question: string;
   answer: string;
+}
+
+export interface ModalProductInfo {
+  id: string;
+  name: string;
+  category: string;
+  tagline: string;
+  desc: string;
+  price: string;
+  originalPrice: string;
+  volume: string;
+  rating: number;
+  reviewsCount: number;
+  image: string;
+  ingredients: Array<{ name: string; botanicalName: string; description: string }>;
+  benefits: Array<{ title: string; desc: string }>;
+  howToUse: Array<{ step: string; title: string; desc: string }>;
+}
+
+export const detailedProductsCatalog: Record<string, ModalProductInfo> = {
+  'product-1': {
+    id: 'product-1',
+    name: 'Mamaearth Ubtan Natural Face Wash',
+    category: 'FACIAL CARE & RADIANCE',
+    tagline: '100ml • Free Shipping Formulated for pure radiance & glow.',
+    desc: 'Formulated with saffron & turmeric for natural skin radiance and gentle daily cleansing.',
+    price: '₹249',
+    originalPrice: '₹349',
+    volume: '100ml / 3.4 fl oz',
+    rating: 4.9,
+    reviewsCount: 1250,
+    image: img1,
+    ingredients: [
+      {
+        name: 'Turmeric (Haldi)',
+        botanicalName: 'Curcuma Longa',
+        description: 'Rich in curcumin antioxidants that naturally soothe skin irritation and reverse sun tan.'
+      },
+      {
+        name: 'Saffron Extract (Kesar)',
+        botanicalName: 'Crocus Sativus',
+        description: 'Traditional royal botanical celebrated for clearing skin tone and promoting warm luminosity.'
+      },
+      {
+        name: 'Walnut Micro-Beads',
+        botanicalName: 'Juglans Regia',
+        description: 'Gentle physical exfoliants that lift away dead skin cells without stripping natural lipids.'
+      },
+      {
+        name: 'Carrot Seed Oil',
+        botanicalName: 'Daucus Carota',
+        description: 'Packed with Provitamin A to shield the skin surface from environmental photo-aging.'
+      }
+    ],
+    benefits: [
+      {
+        title: '100% Pure Cold-Pressed Botanical Formulation',
+        desc: 'Crafted without sulfates, silicones, parabens, or synthetic dyes for pure skin compatibility.'
+      },
+      {
+        title: 'Removes Tan & Restores Natural Glow',
+        desc: 'Traditional ubtan herbs work synergistically to reduce hyperpigmentation from sun exposure.'
+      },
+      {
+        title: 'Deep Pore Cleansing Without Tightness',
+        desc: 'Purifies trapped impurities while preserving vital intercellular moisture.'
+      },
+      {
+        title: 'Dermatologically Tested Formula',
+        desc: 'Clinically verified safe for all skin types, including sensitive skin.'
+      }
+    ],
+    howToUse: [
+      {
+        step: '01',
+        title: 'Splash with water',
+        desc: 'Splash lukewarm water onto your face to open pores gently.'
+      },
+      {
+        step: '02',
+        title: 'Massage gently',
+        desc: 'Apply a coin-sized amount and massage in circular upward motions for 1 minute.'
+      },
+      {
+        step: '03',
+        title: 'Rinse & glow',
+        desc: 'Rinse thoroughly with cool water and pat dry with a soft towel.'
+      }
+    ]
+  },
+  'product-2': {
+    id: 'product-2',
+    name: 'Mamaearth Anti-Pollution Face Cream',
+    category: 'DAY CARE & PROTECTION',
+    tagline: '80g • Free Shipping Formulated for daily barrier defense & moisture.',
+    desc: 'Protects skin from pollution with natural botanical shields while providing all-day hydration.',
+    price: '₹349',
+    originalPrice: '₹499',
+    volume: '80g / 2.8 oz',
+    rating: 4.8,
+    reviewsCount: 890,
+    image: img2,
+    ingredients: [
+      {
+        name: 'Pollustop Matrix',
+        botanicalName: 'Biosaccharide Gum-4',
+        description: 'Forms an invisible non-occlusive botanical matrix that repels PM2.5 and urban dust particles.'
+      },
+      {
+        name: 'Turmeric Root Extract',
+        botanicalName: 'Curcuma Longa Root',
+        description: 'Calms redness caused by atmospheric stress and free radical exposure.'
+      },
+      {
+        name: 'Daisy Flower Extract',
+        botanicalName: 'Bellis Perennis',
+        description: 'Naturally hinders melanin synthesis to keep complexion bright and spot-free.'
+      },
+      {
+        name: 'Organic Shea Butter Base',
+        botanicalName: 'Vitellaria Paradoxa',
+        description: 'Deeply seals in vital hydration without a heavy or greasy film.'
+      }
+    ],
+    benefits: [
+      {
+        title: 'Urban Anti-Pollution Shield',
+        desc: 'Forms an active botanical barrier preventing micro-pollutants from penetrating dermal layers.'
+      },
+      {
+        title: 'Non-Greasy Fast Absorption',
+        desc: 'Featherlight emulsion settles smoothly into skin for comfortable all-day wear.'
+      },
+      {
+        title: 'Evens Out Dark Spots',
+        desc: 'Daisy extract and natural Vitamin E minimize blemishes caused by daily UV stress.'
+      },
+      {
+        title: 'Sustainably Sourced Botanicals',
+        desc: 'Ethically cultivated ingredients free from mineral oil, silicones, and petrolatum.'
+      }
+    ],
+    howToUse: [
+      {
+        step: '01',
+        title: 'Cleanse face',
+        desc: 'Cleanse your face thoroughly with a mild botanical cleanser.'
+      },
+      {
+        step: '02',
+        title: 'Dot across face',
+        desc: 'Take an adequate amount and dot across forehead, cheeks, nose, and neck.'
+      },
+      {
+        step: '03',
+        title: 'Blend evenly',
+        desc: 'Gently massage in circular motions until completely absorbed before heading outdoors.'
+      }
+    ]
+  },
+  'product-3': {
+    id: 'product-3',
+    name: 'Neutrogena Hydro Boost Water Gel',
+    category: 'MOISTURIZER & HYDRATION',
+    tagline: '50g • Free Shipping Formulated for intense 72hr skin hydration.',
+    desc: 'Deep hydration water gel cream that keeps skin supple, plump and glowing all day.',
+    price: '₹950',
+    originalPrice: '₹1250',
+    volume: '50g / 1.7 oz',
+    rating: 4.9,
+    reviewsCount: 1040,
+    image: img3,
+    ingredients: [
+      {
+        name: 'Purified Hyaluronic Acid',
+        botanicalName: 'Sodium Hyaluronate',
+        description: 'Acts like a cellular sponge, absorbing up to 1,000 times its weight in water to quench skin.'
+      },
+      {
+        name: 'Botanical Trehalose',
+        botanicalName: 'Selaginella Lepidophylla',
+        description: 'Naturally derived resurrection plant sugar that locks moisture deep within skin cells.'
+      },
+      {
+        name: 'Prebiotic Complex',
+        botanicalName: 'Skin Biome Activator',
+        description: 'Feeds skin friendly microflora to reinforce protective barrier defenses.'
+      },
+      {
+        name: 'Glycerin Matrix',
+        botanicalName: 'Plant-Derived Glycerol',
+        description: 'Delivers continuous dermal moisture replenishment throughout 72 hours.'
+      }
+    ],
+    benefits: [
+      {
+        title: '72-Hour Continuous Hydration',
+        desc: 'Clinically proven to strengthen moisture barrier and keep skin continuously refreshed.'
+      },
+      {
+        title: 'Unique Water Gel Texture',
+        desc: 'Instantly quenches dry skin without feeling heavy, sticky, or occlusive.'
+      },
+      {
+        title: '100% Oil-Free & Non-Comedogenic',
+        desc: 'Will never clog pores or trigger breakouts; perfect under makeup.'
+      },
+      {
+        title: 'Dermatologist Recommended',
+        desc: 'Formulated to restore optimal hydration for all skin types including oily and combination.'
+      }
+    ],
+    howToUse: [
+      {
+        step: '01',
+        title: 'Prep your skin',
+        desc: 'Cleanse and pat skin damp to maximize hyaluronic acid moisture binding.'
+      },
+      {
+        step: '02',
+        title: 'Apply water gel',
+        desc: 'Scoop a dime-sized amount and smooth evenly over face, neck, and decollete.'
+      },
+      {
+        step: '03',
+        title: 'Feel the rush',
+        desc: 'Enjoy the cooling burst of hydration as the gel transforms instantly into liquid moisture.'
+      }
+    ]
+  },
+  'product-4': {
+    id: 'product-4',
+    name: 'Cetaphil Gentle Oily Skin Cleanser',
+    category: 'DERMATOLOGICAL CLEANSER',
+    tagline: '125ml • Free Shipping Formulated for pure radiance & glow.',
+    desc: '125ml • Free Shipping Formulated for pure radiance & glow.',
+    price: '₹599',
+    originalPrice: '₹779',
+    volume: '200ml / 1.7 fl oz',
+    rating: 4.8,
+    reviewsCount: 128,
+    image: img4,
+    ingredients: [
+      {
+        name: 'Niacinamide (Vitamin B3)',
+        botanicalName: 'Nicotinamide Adaptogen',
+        description: 'Minimizes enlarged pores, regulates sebum flow, and restores uniform skin balance.'
+      },
+      {
+        name: 'Panthenol (Pro-Vitamin B5)',
+        botanicalName: 'D-Panthenol Complex',
+        description: 'Intensively calms skin sensitivity and helps repair damaged lipid structures.'
+      },
+      {
+        name: 'Hydrating Glycerin',
+        botanicalName: 'Pure Botanical Humectant',
+        description: 'Attracts water molecules to prevent post-cleansing tightness and dryness.'
+      },
+      {
+        name: 'Zinc Coceth Sulfate',
+        botanicalName: 'Mild Amphoteric Cleanser',
+        description: 'Ultra-gentle cleansing agent that washes away 99% of excess oil without irritation.'
+      }
+    ],
+    benefits: [
+      {
+        title: '100% pure cold-pressed botanical formulation',
+        desc: 'Hypoallergenic and gentle on skin with zero harsh sulfates or parabens.'
+      },
+      {
+        title: 'Deeply moisturizes without clogging skin pores',
+        desc: 'Removes excess surface oils and grime while maintaining essential moisture barriers.'
+      },
+      {
+        title: 'Ethically sourced adaptogens for natural radiance',
+        desc: 'Clinically proven to defend against 5 signs of skin sensitivity including dryness and tightness.'
+      },
+      {
+        title: 'Dermatologist Tested & Approved',
+        desc: 'Specially engineered for combination to oily and sensitive skin types.'
+      }
+    ],
+    howToUse: [
+      {
+        step: '01',
+        title: 'Dispense cleanser',
+        desc: 'Apply 1-2 pumps of the soothing cleanser onto wet palms.'
+      },
+      {
+        step: '02',
+        title: 'Gentle lather',
+        desc: 'Massage onto damp facial skin in circular motions, focusing on the T-zone.'
+      },
+      {
+        step: '03',
+        title: 'Rinse cleanly',
+        desc: 'Rinse thoroughly with clean lukewarm water and pat dry gently.'
+      }
+    ]
+  },
+  'product-5': {
+    id: 'product-5',
+    name: 'Mamaearth Vitamin C Daily Glow Wash',
+    category: 'BRIGHTENING FACE WASH',
+    tagline: '100ml • Free Shipping Formulated for instant glow & refreshed skin.',
+    desc: 'Enriched with Vitamin C & Lemon for instant skin brightening and refreshed complexion.',
+    price: '₹399',
+    originalPrice: '₹549',
+    volume: '100ml / 3.4 fl oz',
+    rating: 5.0,
+    reviewsCount: 520,
+    image: img5,
+    ingredients: [
+      {
+        name: 'Vitamin C (Ascorbic Acid)',
+        botanicalName: 'L-Ascorbic Acid',
+        description: 'Reverses skin fatigue, protects against UV oxidation, and promotes collagen synthesis.'
+      },
+      {
+        name: 'Lemon Peel Extract',
+        botanicalName: 'Citrus Limon Peel',
+        description: 'Naturally purifies clogged pores, balances excess sebum, and fades dark spots.'
+      },
+      {
+        name: 'Aloe Vera Leaf Juice',
+        botanicalName: 'Aloe Barbadensis',
+        description: 'Soothes inflammation and replenishes vital skin moisture after every wash.'
+      },
+      {
+        name: 'Plant-Based Glycerin',
+        botanicalName: 'Glycerol',
+        description: 'Leaves skin feeling soft, supple, and hydrated without squeaky tightness.'
+      }
+    ],
+    benefits: [
+      {
+        title: 'Instant Radiant Glow',
+        desc: 'Awakens tired skin with energizing Vitamin C for a fresh, illuminated appearance.'
+      },
+      {
+        title: 'Clarifies Excess Oil',
+        desc: 'Natural citrus fruit extracts tone pores and remove environmental micro-pollutants.'
+      },
+      {
+        title: 'Non-Drying Daily Formula',
+        desc: 'Gentle botanical foaming action that maintains natural acid mantle balance.'
+      },
+      {
+        title: 'Free from Harmful Toxins',
+        desc: 'Made with certified organic botanicals; zero SLS, parabens, or mineral oils.'
+      }
+    ],
+    howToUse: [
+      {
+        step: '01',
+        title: 'Wet face',
+        desc: 'Splash clean water across face and neck.'
+      },
+      {
+        step: '02',
+        title: 'Work up lather',
+        desc: 'Dispense a small amount onto fingertips and gently lather in upward circular motions.'
+      },
+      {
+        step: '03',
+        title: 'Rinse & enjoy glow',
+        desc: 'Rinse with cool water to seal pores and reveal radiant, revitalized skin.'
+      }
+    ]
+  }
+};
+
+export function getProductModalData(bundle: any): ModalProductInfo {
+  const idStr = String(bundle?.id || '');
+  if (detailedProductsCatalog[idStr]) {
+    const catalogItem = detailedProductsCatalog[idStr];
+    return {
+      ...catalogItem,
+      name: bundle.name || catalogItem.name,
+      price: bundle.price ? (typeof bundle.price === 'number' ? `₹${bundle.price}` : bundle.price) : catalogItem.price,
+      originalPrice: bundle.originalPrice ? (typeof bundle.originalPrice === 'number' ? `₹${bundle.originalPrice}` : bundle.originalPrice) : catalogItem.originalPrice,
+      image: bundle.image || catalogItem.image,
+      category: bundle.badge || catalogItem.category,
+      volume: bundle.size ? bundle.size.replace(' • Free Shipping', '') : catalogItem.volume
+    };
+  }
+
+  // Fallback for custom added products from admin
+  const priceNum = typeof bundle.price === 'number' ? bundle.price : parseInt(String(bundle.price || '').replace(/[^0-9]/g, '')) || 499;
+  const origNum = bundle.originalPrice ? (typeof bundle.originalPrice === 'number' ? bundle.originalPrice : parseInt(String(bundle.originalPrice).replace(/[^0-9]/g, ''))) : Math.round(priceNum * 1.35);
+
+  return {
+    id: idStr || `product-${Date.now()}`,
+    name: bundle.name || 'Earthora Botanical Formulation',
+    category: bundle.badge || 'BOTANICAL CARE & RADIANCE',
+    tagline: bundle.size ? `${bundle.size} Formulated for pure radiance & glow.` : 'Formulated for natural skin radiance and gentle daily nourishment.',
+    desc: bundle.desc || 'Formulated with cold-pressed natural botanicals for deep nourishment and skin radiance.',
+    price: `₹${priceNum}`,
+    originalPrice: `₹${origNum}`,
+    volume: bundle.size ? bundle.size.replace(' • Free Shipping', '') : '100ml / 3.4 fl oz',
+    rating: 4.9,
+    reviewsCount: 1250,
+    image: bundle.image || img1,
+    ingredients: [
+      {
+        name: 'Cold-Pressed Botanical Elixir',
+        botanicalName: 'Pure Botanical Complex',
+        description: 'Formulated with pure adaptogenic plant extracts that soothe and revitalize the skin.'
+      },
+      {
+        name: 'Natural Vitamin E Complex',
+        botanicalName: 'Tocopherol Extract',
+        description: 'Potent antioxidant shield that protects against daily environmental oxidation.'
+      },
+      {
+        name: 'Organic Jojoba Base',
+        botanicalName: 'Simmondsia Chinensis',
+        description: 'Deeply hydrating plant wax that mirrors skin natural sebum for seamless absorption.'
+      }
+    ],
+    benefits: [
+      {
+        title: '100% Pure Cold-Pressed Botanical Formulation',
+        desc: 'Free from mineral oils, harsh parabens, sulfates, and synthetic dyes.'
+      },
+      {
+        title: 'Deeply Moisturizes Without Clogging Pores',
+        desc: 'Lightweight nutrient-dense texture absorbs smoothly into the dermal layers.'
+      },
+      {
+        title: 'Restores Radiant Skin Barrier',
+        desc: 'Enriched with essential fatty acids and antioxidants for long-lasting glow.'
+      }
+    ],
+    howToUse: [
+      {
+        step: '01',
+        title: 'Dispense properly',
+        desc: 'Take an adequate amount onto clean, dry hands.'
+      },
+      {
+        step: '02',
+        title: 'Activate & warm',
+        desc: 'Gently warm between palms to release natural botanical aromatics.'
+      },
+      {
+        step: '03',
+        title: 'Apply mindfully',
+        desc: 'Smooth gently onto skin until absorbed.'
+      }
+    ]
+  };
 }
 
 export const productData = {
@@ -87,7 +539,7 @@ export const productData = {
       name: 'Cetaphil Gentle Oily Skin Cleanser',
       size: '125ml • Free Shipping',
       price: 599,
-      originalPrice: 750,
+      originalPrice: 779,
       discount: '20% OFF',
       badge: 'DERMATOLOGICAL CLEANSER',
       bestValue: false,
@@ -130,12 +582,6 @@ export const productData = {
       title: 'Active Lifestyle Support',
       desc: 'Rich in natural antioxidants that boost vitality and fit seamlessly into your active daily routine.',
       icon: 'shield'
-    },
-    {
-      id: 4,
-      title: 'Daily Mindful Ritual',
-      desc: 'Made to turn everyday grooming into a grounding, luxurious moment of personal renewal.',
-      icon: 'sun'
     }
   ],
   story: {
@@ -250,16 +696,6 @@ export const productData = {
       comment: 'The packaging and product quality are exceptional. Using it in the evening before sleep has become my favorite way to unwind.',
       verified: true,
       location: 'New Delhi, DL'
-    },
-    {
-      id: 3,
-      name: 'Priya K.',
-      rating: 5,
-      date: 'August 10, 2026',
-      title: 'Visible skin radiance in two weeks',
-      comment: 'I was skeptical about facial oils, but Earthora absorbs so fast. My skin looks vibrant and feels smooth all day long.',
-      verified: true,
-      location: 'Bengaluru, KA'
     }
   ] as Review[],
   faqs: [

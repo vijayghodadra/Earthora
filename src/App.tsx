@@ -4,7 +4,6 @@ import Lenis from 'lenis';
 
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
-import TrustBar from './components/TrustBar';
 import FeaturedCollection from './components/FeaturedCollection';
 import Benefits from './components/Benefits';
 import Comparison from './components/Comparison';
@@ -51,7 +50,8 @@ function App() {
 
   const [reviewsList, setReviewsList] = useState<Review[]>(() => {
     const saved = localStorage.getItem('earthora_reviews');
-    return saved ? JSON.parse(saved) : productData.reviews;
+    const initial = saved ? JSON.parse(saved) : productData.reviews;
+    return initial.filter((r: Review) => r.id !== 3 && r.name !== 'Priya K.');
   });
 
   const [coupons, setCoupons] = useState<CouponCode[]>(() => {
@@ -248,7 +248,6 @@ function App() {
           onBuyNow={handleBuyNow}
           productsList={bundles}
         />
-        <TrustBar />
         <Benefits />
         <FeaturedCollection 
           onAddToCart={handleAddToCart}

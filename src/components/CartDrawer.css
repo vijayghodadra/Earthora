@@ -25,8 +25,9 @@
   box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
   .cart-drawer-panel {
+    width: 100%;
     max-width: 100%;
   }
 }

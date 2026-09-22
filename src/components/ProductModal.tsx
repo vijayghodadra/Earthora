@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   X, 
@@ -14,7 +14,9 @@ import {
   Sparkles,
   Droplets,
   Shield,
-  Sun
+  Sun,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import type { ProductBundle } from '../data/productData';
 import './ProductModal.css';
@@ -38,6 +40,8 @@ export interface ProductModalData {
 
 interface ProductModalProps {
   product: ProductModalData | null;
+  allProducts?: ProductModalData[];
+  onSelectProduct?: (product: ProductModalData) => void;
   onClose: () => void;
   onAddToCart?: (bundle: ProductBundle, quantity: number) => void;
   onBuyNow?: (bundle: ProductBundle, quantity: number) => void;
@@ -119,13 +123,28 @@ const defaultHowToUse = [
   }
 ];
 
-const ProductModal = ({ product, onClose, onAddToCart, onBuyNow }: ProductModalProps) => {
+const ProductModal = ({ 
+  product, 
+  allProducts,
+  onSelectProduct,
+  onClose, 
+  onAddToCart, 
+  onBuyNow 
+}: ProductModalProps) => {
+  const [currentProduct, setCurrentProduct] = useState<ProductModalData | null>(product);
   const [activeTab, setActiveTab] = useState<TabType>('description');
   const [quantity, setQuantity] = useState<number>(1);
   const [isWishlisted, setIsWishlisted] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  if (!product) return null;
+  useEffect(() => {
+    if (product) {
+      setCurrentProduct(product);
+      setQuantity(1);
+    }
+  }, [product]);
+
+  if (!currentProduct) return null;
 
   const handleDecreaseQty = () => {
     if (quantity > 1) setQuantity((prev) => prev - 1);
@@ -135,21 +154,45 @@ const ProductModal = ({ product, onClose, onAddToCart, onBuyNow }: ProductModalP
     setQuantity((prev) => prev + 1);
   };
 
-  const currentPriceNum = parseInt(product.price.replace(/[^0-9]/g, '')) || 2490;
-  const currentOriginalNum = product.originalPrice 
-    ? parseInt(product.originalPrice.replace(/[^0-9]/g, '')) 
+  const currentIndex = allProducts 
+    ? allProducts.findIndex(p => String(p.id) === String(currentProduct.id))
+    : -1;
+
+  const handleSwitchProduct = (targetProd: ProductModalData) => {
+    setCurrentProduct(targetProd);
+    setQuantity(1);
+    onSelectProduct?.(targetProd);
+  };
+
+  const handlePrevProduct = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!allProducts || allProducts.length <= 1) return;
+    const newIdx = (currentIndex - 1 + allProducts.length) % allProducts.length;
+    handleSwitchProduct(allProducts[newIdx]);
+  };
+
+  const handleNextProduct = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!allProducts || allProducts.length <= 1) return;
+    const newIdx = (currentIndex + 1) % allProducts.length;
+    handleSwitchProduct(allProducts[newIdx]);
+  };
+
+  const currentPriceNum = parseInt(currentProduct.price.replace(/[^0-9]/g, '')) || 2490;
+  const currentOriginalNum = currentProduct.originalPrice 
+    ? parseInt(currentProduct.originalPrice.replace(/[^0-9]/g, '')) 
     : Math.round(currentPriceNum * 1.4);
 
   const bundleData: ProductBundle = {
-    id: typeof product.id === 'string' && String(product.id).startsWith('product-')
-      ? String(product.id)
-      : `product-${product.id}`,
-    name: product.name,
-    size: product.volume || '100ml / 3.4 fl oz',
+    id: typeof currentProduct.id === 'string' && String(currentProduct.id).startsWith('product-')
+      ? String(currentProduct.id)
+      : `product-${currentProduct.id}`,
+    name: currentProduct.name,
+    size: currentProduct.volume || '100ml / 3.4 fl oz',
     price: currentPriceNum,
     originalPrice: currentOriginalNum,
     discount: `${Math.round(((currentOriginalNum - currentPriceNum) / currentOriginalNum) * 100)}% OFF`,
-    image: product.image
+    image: currentProduct.image
   };
 
   const handleAddToCartClick = (e?: React.MouseEvent) => {
@@ -162,7 +205,7 @@ const ProductModal = ({ product, onClose, onAddToCart, onBuyNow }: ProductModalP
     if (onAddToCart) {
       onAddToCart(bundleData, quantity);
     } else {
-      alert(`Added ${quantity} x ${product.name} to cart!`);
+      alert(`Added ${quantity} x ${currentProduct.name} to cart!`);
     }
     onClose();
   };
@@ -182,9 +225,9 @@ const ProductModal = ({ product, onClose, onAddToCart, onBuyNow }: ProductModalP
     onClose();
   };
 
-  const ingredientsList = product.ingredients || defaultIngredients;
-  const benefitsList = product.benefits || defaultBenefits;
-  const howToUseList = product.howToUse || defaultHowToUse;
+  const ingredientsList = currentProduct.ingredients || defaultIngredients;
+  const benefitsList = currentProduct.benefits || defaultBenefits;
+  const howToUseList = currentProduct.howToUse || defaultHowToUse;
 
   return (
     <AnimatePresence>
@@ -218,27 +261,75 @@ const ProductModal = ({ product, onClose, onAddToCart, onBuyNow }: ProductModalP
               >
                 <Heart size={18} fill={isWishlisted ? '#e53935' : 'none'} color={isWishlisted ? '#e53935' : '#4a5568'} />
               </button>
-              <motion.img 
-                key={product.image}
-                src={product.image} 
-                alt={product.name} 
-                className="modal-product-img"
-                initial={{ scale: 1.05, opacity: 0.8 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.5 }}
-              />
+
+              {allProducts && allProducts.length > 1 && (
+                <>
+                  <button 
+                    type="button"
+                    className="modal-nav-arrow prev"
+                    onClick={handlePrevProduct}
+                    aria-label="Previous product"
+                    title="Previous product"
+                  >
+                    <ChevronLeft size={18} />
+                  </button>
+                  <button 
+                    type="button"
+                    className="modal-nav-arrow next"
+                    onClick={handleNextProduct}
+                    aria-label="Next product"
+                    title="Next product"
+                  >
+                    <ChevronRight size={18} />
+                  </button>
+                </>
+              )}
+
+              <AnimatePresence mode="wait">
+                <motion.img 
+                  key={currentProduct.image}
+                  src={currentProduct.image} 
+                  alt={currentProduct.name} 
+                  className="modal-product-img"
+                  initial={{ scale: 0.94, opacity: 0.5 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 1.05, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                />
+              </AnimatePresence>
             </div>
+
+            {/* Product Switcher Thumbnails Strip */}
+            {allProducts && allProducts.length > 1 && (
+              <div className="modal-thumbnails-strip" aria-label="All products">
+                {allProducts.map((p) => {
+                  const isActive = String(p.id) === String(currentProduct.id);
+                  return (
+                    <button
+                      key={p.id}
+                      type="button"
+                      className={`modal-thumb-btn ${isActive ? 'active' : ''}`}
+                      onClick={() => handleSwitchProduct(p)}
+                      title={p.name}
+                      aria-label={`View ${p.name}`}
+                    >
+                      <img src={p.image} alt={p.name} />
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
           
           {/* Right Product Details & Tabs Section */}
           <div className="modal-info-col">
             <div className="modal-header-block">
               <div className="modal-badge-row">
-                <span className="modal-category-badge">✨ {product.category || 'AROMATHERAPY & WELLNESS'}</span>
+                <span className="modal-category-badge">✨ {currentProduct.category || 'DERMATOLOGICAL CLEANSER'}</span>
               </div>
 
-              <h2 className="modal-product-title">{product.name}</h2>
-              <p className="modal-tagline">{product.tagline || product.desc}</p>
+              <h2 className="modal-product-title">{currentProduct.name}</h2>
+              <p className="modal-tagline">{currentProduct.tagline || currentProduct.desc}</p>
 
               <div className="modal-rating-row">
                 <div className="rating-stars">
@@ -246,8 +337,8 @@ const ProductModal = ({ product, onClose, onAddToCart, onBuyNow }: ProductModalP
                     <Star key={i} size={15} fill="#d97706" color="#d97706" />
                   ))}
                 </div>
-                <span className="rating-score">4.8</span>
-                <span className="reviews-count">(128 reviews)</span>
+                <span className="rating-score">{currentProduct.rating || 4.8}</span>
+                <span className="reviews-count">({currentProduct.reviewsCount || 128} reviews)</span>
                 <span className="divider-line">|</span>
                 <span className="stock-status">
                   <CheckCircle2 size={14} className="in-stock-icon" /> In Stock (Available)
@@ -257,15 +348,15 @@ const ProductModal = ({ product, onClose, onAddToCart, onBuyNow }: ProductModalP
               {/* Price Banner */}
               <div className="modal-price-box">
                 <div className="price-main-stack">
-                  <span className="modal-price-val">{product.price}</span>
-                  {product.originalPrice && (
-                    <span className="modal-price-orig">{product.originalPrice}</span>
+                  <span className="modal-price-val">{currentProduct.price}</span>
+                  {currentProduct.originalPrice && (
+                    <span className="modal-price-orig">{currentProduct.originalPrice}</span>
                   )}
-                  {!product.originalPrice && (
+                  {!currentProduct.originalPrice && (
                     <span className="modal-price-orig">₹{currentOriginalNum}</span>
                   )}
                 </div>
-                <span className="volume-label">Net Vol: {product.volume || '200ml / 1.7 fl oz'}</span>
+                <span className="volume-label">Net Vol: {currentProduct.volume || '200ml / 1.7 fl oz'}</span>
               </div>
             </div>
 
@@ -314,7 +405,7 @@ const ProductModal = ({ product, onClose, onAddToCart, onBuyNow }: ProductModalP
                     className="tab-panel"
                   >
                     <p className="tab-desc-text">
-                      {product.desc}
+                      {currentProduct.desc || currentProduct.tagline}
                     </p>
                     <div className="tab-highlights-list">
                       <div className="tab-highlight-item">

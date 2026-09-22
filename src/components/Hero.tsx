@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Star, ShieldCheck, Truck, Plus, Minus, Check, Tag } from 'lucide-react';
+import { Star, ShieldCheck, Truck, Plus, Minus, Check, Tag, Eye, Maximize2 } from 'lucide-react';
 import type { ProductBundle } from '../data/productData';
+import { getProductModalData } from '../data/productData';
+import ProductModal, { type ProductModalData } from './ProductModal';
 import './Hero.css';
 
 import img1 from '../assets/images (1).jpg';
@@ -62,11 +64,11 @@ const defaultHeroProducts = [
     category: 'DERMATOLOGICAL CLEANSER',
     tagline: 'Gentle daily cleanser designed for oily to combination skin, removing excess oil without drying.',
     price: 599,
-    originalPrice: 750,
+    originalPrice: 779,
     discount: '20% OFF',
     size: '125ml • Free Shipping',
-    rating: 4.7,
-    reviewCount: 670,
+    rating: 4.8,
+    reviewCount: 128,
     image: img4
   },
   {
@@ -88,6 +90,8 @@ const Hero = ({ onAddToCart, onBuyNow, productsList }: HeroProps) => {
   const [activeProductIndex, setActiveProductIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalProduct, setModalProduct] = useState<ProductModalData | null>(null);
 
   // Map dynamic products from props or fallback to default
   const activeProducts = (productsList && productsList.length > 0)
@@ -109,6 +113,26 @@ const Hero = ({ onAddToCart, onBuyNow, productsList }: HeroProps) => {
 
   const safeIndex = activeProductIndex < activeProducts.length ? activeProductIndex : 0;
   const activeProduct = activeProducts[safeIndex] || activeProducts[0];
+
+  const allModalProducts: ProductModalData[] = activeProducts.map(p => 
+    getProductModalData(p.rawBundle || p)
+  );
+
+  const handleOpenModal = (index?: number) => {
+    const targetIndex = typeof index === 'number' ? index : safeIndex;
+    const targetProd = activeProducts[targetIndex] || activeProducts[0];
+    const data = getProductModalData(targetProd.rawBundle || targetProd);
+    setModalProduct(data);
+    setIsModalOpen(true);
+  };
+
+  const handleSelectProductInModal = (selected: ProductModalData) => {
+    setModalProduct(selected);
+    const foundIdx = activeProducts.findIndex(p => String(p.id) === String(selected.id));
+    if (foundIdx !== -1) {
+      setActiveProductIndex(foundIdx);
+    }
+  };
 
   const incrementQty = () => setQuantity((prev) => prev + 1);
   const decrementQty = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
@@ -152,7 +176,28 @@ const Hero = ({ onAddToCart, onBuyNow, productsList }: HeroProps) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="main-image-container">
+          <div 
+            className="main-image-container"
+            onClick={() => handleOpenModal()}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleOpenModal();
+              }
+            }}
+            title="Click to view full product details"
+            aria-label={`View full details for ${activeProduct.name}`}
+          >
+            <div className="hero-card-expand-icon" title="Quick View">
+              <Maximize2 size={15} />
+            </div>
+            <div className="hero-quick-view-floating-tag">
+              <Eye size={14} />
+              <span>Quick View Details</span>
+            </div>
+
             <AnimatePresence mode="wait">
               <motion.img 
                 key={safeIndex}
@@ -199,7 +244,13 @@ const Hero = ({ onAddToCart, onBuyNow, productsList }: HeroProps) => {
               className="hero-details-container"
             >
               <span className="section-eyebrow">{activeProduct.category}</span>
-              <h1 className="hero-product-title">{activeProduct.name}</h1>
+              <h1 
+                className="hero-product-title"
+                onClick={() => handleOpenModal()}
+                title="Click to view full product details"
+              >
+                {activeProduct.name}
+              </h1>
 
               {/* Rating Summary */}
               <div className="hero-rating-bar">
@@ -213,6 +264,15 @@ const Hero = ({ onAddToCart, onBuyNow, productsList }: HeroProps) => {
                 <a href="#reviews" className="reviews-link">
                   {activeProduct.reviewCount.toLocaleString()} verified reviews
                 </a>
+                <button 
+                  type="button" 
+                  className="hero-quickview-pill-btn"
+                  onClick={() => handleOpenModal()}
+                  title="Quick view product details"
+                >
+                  <Eye size={12} />
+                  <span>View Details</span>
+                </button>
               </div>
 
               <p className="hero-description">{activeProduct.tagline}</p>
@@ -281,6 +341,17 @@ const Hero = ({ onAddToCart, onBuyNow, productsList }: HeroProps) => {
         </motion.div>
 
       </div>
+
+      {isModalOpen && modalProduct && (
+        <ProductModal 
+          product={modalProduct}
+          allProducts={allModalProducts}
+          onSelectProduct={handleSelectProductInModal}
+          onClose={() => setIsModalOpen(false)}
+          onAddToCart={onAddToCart}
+          onBuyNow={onBuyNow}
+        />
+      )}
     </section>
   );
 };

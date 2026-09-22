@@ -54,6 +54,17 @@
   justify-content: center;
   padding: 0.5rem;
   margin: 0 auto;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+@media (max-width: 480px) {
+  .main-image-container {
+    max-width: 320px;
+    max-height: 320px;
+    border-radius: var(--radius-lg);
+    padding: 0.5rem;
+  }
 }
 
 @media (min-width: 768px) {
@@ -61,6 +72,66 @@
     border-radius: var(--radius-xl);
     padding: 0.75rem;
   }
+}
+
+.main-image-container:hover {
+  transform: translateY(-3px);
+  border-color: rgba(59, 78, 50, 0.3);
+  box-shadow: 0 20px 45px rgba(59, 78, 50, 0.14);
+}
+
+.hero-card-expand-icon {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(59, 78, 50, 0.15);
+  color: var(--accent-olive);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  transition: all 0.25s ease;
+  z-index: 5;
+}
+
+.main-image-container:hover .hero-card-expand-icon {
+  background: var(--accent-olive);
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.hero-quick-view-floating-tag {
+  position: absolute;
+  bottom: 1.1rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: rgba(43, 58, 37, 0.92);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  padding: 0.45rem 1rem;
+  border-radius: 30px;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 5;
+  white-space: nowrap;
+}
+
+.main-image-container:hover .hero-quick-view-floating-tag {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 .badge-featured {
@@ -89,7 +160,7 @@
 }
 
 .main-image-container:hover .main-product-img {
-  transform: scale(1.03);
+  transform: scale(1.04);
 }
 
 .gallery-thumbnails {
@@ -172,6 +243,12 @@
   margin-bottom: 0.75rem;
   text-align: center;
   color: var(--text-primary);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.hero-product-title:hover {
+  color: var(--accent-olive);
 }
 
 @media (min-width: 640px) {
@@ -277,6 +354,32 @@
 
 .reviews-link:hover {
   color: var(--accent-olive);
+}
+
+.hero-quickview-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.22rem 0.65rem;
+  border-radius: 20px;
+  background: #edf1ea;
+  border: 1px solid rgba(59, 78, 50, 0.2);
+  color: var(--accent-olive);
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-left: 0.4rem;
+}
+
+.hero-quickview-pill-btn:hover {
+  background: var(--accent-olive);
+  color: #ffffff;
+  border-color: var(--accent-olive);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(59, 78, 50, 0.2);
 }
 
 .hero-description {

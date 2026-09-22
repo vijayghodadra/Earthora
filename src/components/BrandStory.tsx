@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { Sparkle } from 'lucide-react';
 import { productData } from '../data/productData';
 import './BrandStory.css';
 
@@ -20,15 +19,6 @@ const BrandStory = () => {
 
           <p className="story-paragraph">{productData.story.paragraph1}</p>
           <p className="story-paragraph">{productData.story.paragraph2}</p>
-
-          <div className="story-bullets-grid">
-            {productData.story.bullets.map((bullet, idx) => (
-              <div key={idx} className="story-bullet-item">
-                <Sparkle size={16} className="bullet-icon" />
-                <span>{bullet}</span>
-              </div>
-            ))}
-          </div>
         </motion.div>
 
       </div>

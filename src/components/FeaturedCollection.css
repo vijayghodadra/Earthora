@@ -111,16 +111,20 @@
   flex: 1;
   position: relative;
   overflow: hidden;
-  background: #e7ede2;
+  background: #fdfdfc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .card-image-wrapper img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  object-fit: contain;
+  padding: 0.75rem;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .product-card:hover .card-image-wrapper img {
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
 
 .circle-plus {
@@ -318,5 +322,15 @@
     align-items: flex-start;
     gap: 0.75rem;
     margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-number {
+    width: 2.75rem;
+    font-size: 0.75rem;
+  }
+  .card-title {
+    font-size: 1.15rem;
   }
 }

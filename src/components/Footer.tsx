@@ -1,12 +1,11 @@
 import './Footer.css';
-import { ShieldCheck } from 'lucide-react';
 import logoImg from '../assets/logo.jpeg';
 
 interface FooterProps {
   onOpenAdmin?: () => void;
 }
 
-const Footer = ({ onOpenAdmin }: FooterProps) => {
+const Footer = ({ onOpenAdmin: _onOpenAdmin }: FooterProps) => {
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     const targetEl = document.querySelector(href);
@@ -47,18 +46,6 @@ const Footer = ({ onOpenAdmin }: FooterProps) => {
               <a href="#comparison" onClick={(e) => handleNavClick(e, '#comparison')}>Why EarthOra</a>
               <a href="#details" onClick={(e) => handleNavClick(e, '#details')}>Formula Ingredients</a>
               <a href="#faq" onClick={(e) => handleNavClick(e, '#faq')}>FAQ & Support</a>
-            </div>
-
-            <div className="footer-col">
-              <div className="footer-col-title">Executive & Admin</div>
-              {onOpenAdmin && (
-                <button 
-                  className="footer-admin-btn"
-                  onClick={onOpenAdmin}
-                >
-                  <ShieldCheck size={16} /> Executive Admin Portal
-                </button>
-              )}
             </div>
           </div>
         </div>

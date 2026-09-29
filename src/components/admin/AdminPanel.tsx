@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import logoImg from '../../assets/logo.jpeg';
+import logoImg from '../../assets/logo.png';
 import { 
   LayoutDashboard, 
   Package, 

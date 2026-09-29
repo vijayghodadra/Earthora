@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { User, Lock, ArrowRight, X } from 'lucide-react';
-import logoImg from '../../assets/logo.jpeg';
+import logoImg from '../../assets/logo.png';
 
 interface AdminLoginModalProps {
   isOpen: boolean;

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingBag, Menu, X, ChevronRight, ShieldCheck, User, LogOut, Package } from 'lucide-react';
-import logoImg from '../assets/logo.jpeg';
+import logoImg from '../assets/logo.png';
 import type { UserProfileData } from './auth/UserAuthModal';
 import type { CustomerOrder } from '../types/adminTypes';
 import './Navigation.css';

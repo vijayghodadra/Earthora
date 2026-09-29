@@ -1,14 +1,11 @@
 import { motion } from 'framer-motion';
 import { Star, CheckCircle } from 'lucide-react';
-import { productData, type Review } from '../data/productData';
+import { productData } from '../data/productData';
 import './Reviews.css';
 
-interface ReviewsProps {
-  reviewsList?: Review[];
-}
-
-const Reviews = ({ reviewsList }: ReviewsProps) => {
-  const displayReviews = reviewsList && reviewsList.length > 0 ? reviewsList : productData.reviews;
+const Reviews = () => {
+  // Always keep homepage testimonials static as requested
+  const displayReviews = productData.reviews;
 
   return (
     <section id="reviews" className="reviews-section">

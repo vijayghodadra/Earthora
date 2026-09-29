@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Trash2, ShieldCheck, ArrowRight, ShoppingBag, CheckCircle2, Lock } from 'lucide-react';
+import { X, Trash2, ShieldCheck, ArrowRight, ShoppingBag, CheckCircle2, Lock, Truck, UserCheck } from 'lucide-react';
 import type { ProductBundle } from '../data/productData';
 import type { CustomerOrder, PaymentMethod } from '../types/adminTypes';
+import type { UserProfileData } from './auth/UserAuthModal';
 import img1 from '../assets/images (1).jpg';
 import './CartDrawer.css';
 
@@ -18,6 +19,9 @@ interface CartDrawerProps {
   onUpdateQty: (bundleId: string, delta: number) => void;
   onRemoveItem: (bundleId: string) => void;
   onPlaceOrder?: (order: CustomerOrder) => void;
+  currentUser?: UserProfileData | null;
+  onOpenAuth?: () => void;
+  onOpenTracking?: (orderId: string) => void;
 }
 
 export const CartDrawer = ({ 
@@ -26,7 +30,10 @@ export const CartDrawer = ({
   items, 
   onUpdateQty, 
   onRemoveItem,
-  onPlaceOrder 
+  onPlaceOrder,
+  currentUser,
+  onOpenAuth,
+  onOpenTracking
 }: CartDrawerProps) => {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('Razorpay');
@@ -34,13 +41,21 @@ export const CartDrawer = ({
   const [isOrderComplete, setIsOrderComplete] = useState(false);
   const [completedOrderId, setCompletedOrderId] = useState('');
 
-  // Form Fields
-  const [customerName, setCustomerName] = useState('Priya Sharma');
-  const [email, setEmail] = useState('priya.sharma@example.com');
-  const [phone, setPhone] = useState('+91 98201 54321');
-  const [address, setAddress] = useState('Flat 502, Green Acres, Powai');
-  const [city, setCity] = useState('Mumbai');
-  const [pincode] = useState('400076');
+  // Form Fields - Auto-fill from active logged-in user profile
+  const [customerName, setCustomerName] = useState(currentUser?.name || '');
+  const [email, setEmail] = useState(currentUser?.email || '');
+  const [phone, setPhone] = useState(currentUser?.phone || '');
+  const [address, setAddress] = useState('');
+  const [city, setCity] = useState('');
+  const [pincode] = useState('400001');
+
+  useEffect(() => {
+    if (currentUser) {
+      if (currentUser.name) setCustomerName(currentUser.name);
+      if (currentUser.email) setEmail(currentUser.email);
+      if (currentUser.phone) setPhone(currentUser.phone);
+    }
+  }, [currentUser]);
 
   const subtotal = items.reduce((sum, item) => sum + item.bundle.price * item.quantity, 0);
 
@@ -73,7 +88,7 @@ export const CartDrawer = ({
       phone,
       address,
       city,
-      pincode,
+      pincode: pincode || '400001',
       date: dateStr,
       items: items.map(i => ({
         bundleId: i.bundle.id,
@@ -89,7 +104,8 @@ export const CartDrawer = ({
       paymentStatus: method === 'COD' ? 'Pending COD' : 'Paid',
       razorpayPaymentId: rzpPaymentId || (method === 'Razorpay' ? `pay_rzp_${Math.floor(100000000 + Math.random() * 900000000)}` : undefined),
       razorpayOrderId: method === 'Razorpay' ? `order_rzp_${Math.floor(100000 + Math.random() * 900000)}` : undefined,
-      status: 'Processing',
+      status: 'Pending', // Real-world: Order Placed (Waiting for Store Acceptance)
+      courier: 'Delhivery Express',
       trackingNumber: `ETH-TRK-${Math.floor(100000 + Math.random() * 900000)}`
     };
 
@@ -142,10 +158,33 @@ export const CartDrawer = ({
                 <CheckCircle2 size={54} className="text-emerald margin-bottom-md" />
                 <h3 className="text-gold">Order Placed Successfully!</h3>
                 <p className="user-sub">Order Reference: <strong>{completedOrderId}</strong></p>
-                <p className="margin-top-sm">Thank you for choosing Earthora. Your order has been registered in the system and is being processed.</p>
-                <button className="btn-primary margin-top-lg" onClick={handleResetAndClose}>
-                  Back to Store
-                </button>
+                <div className="order-live-status-card">
+                  <div className="live-status-indicator">
+                    <span className="live-pulse-dot" />
+                    <span className="live-status-text">Status: <strong>Order Placed (Pending Acceptance)</strong></span>
+                  </div>
+                  <p className="live-status-sub">
+                    Your order has been queued for apothecary confirmation. You can track preparation, courier dispatch, and live delivery updates in real-time.
+                  </p>
+                </div>
+                <div className="order-success-actions">
+                  {onOpenTracking && (
+                    <button 
+                      className="btn-primary track-cta-btn" 
+                      onClick={() => {
+                        const ord = completedOrderId;
+                        handleResetAndClose();
+                        onOpenTracking(ord);
+                      }}
+                    >
+                      <Truck size={17} />
+                      <span>Track Your Order Live</span>
+                    </button>
+                  )}
+                  <button className="btn-secondary" onClick={handleResetAndClose}>
+                    Continue Shopping
+                  </button>
+                </div>
               </div>
             ) : items.length === 0 ? (
               <div className="empty-cart-view">
@@ -244,6 +283,32 @@ export const CartDrawer = ({
                   </div>
 
                   <div className="admin-modal-body grid-2">
+                    {currentUser ? (
+                      <div className="checkout-user-banner full-width">
+                        <UserCheck size={18} className="text-emerald" />
+                        <div>
+                          <span>Logged in as <strong>{currentUser.name}</strong> ({currentUser.email})</span>
+                          <span className="user-sub">Your delivery details have been pre-filled.</span>
+                        </div>
+                      </div>
+                    ) : (
+                      onOpenAuth && (
+                        <div className="checkout-login-banner full-width">
+                          <span>Already have an Earthora account?</span>
+                          <button 
+                            type="button" 
+                            className="checkout-auth-link"
+                            onClick={() => {
+                              setIsCheckoutOpen(false);
+                              onOpenAuth();
+                            }}
+                          >
+                            Sign In for 1-Click Checkout →
+                          </button>
+                        </div>
+                      )
+                    )}
+
                     <div className="form-group">
                       <label>Full Name</label>
                       <input 

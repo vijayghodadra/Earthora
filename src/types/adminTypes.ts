@@ -29,6 +29,13 @@ export interface CustomerOrder {
   razorpayOrderId?: string;
   status: OrderStatus;
   trackingNumber?: string;
+  courier?: string;
+  estimatedDelivery?: string;
+  statusTimeline?: {
+    status: OrderStatus;
+    timestamp: string;
+    note: string;
+  }[];
 }
 
 export interface CustomerProfile {

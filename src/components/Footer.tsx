@@ -26,7 +26,7 @@ const Footer = ({ onOpenAdmin: _onOpenAdmin }: FooterProps) => {
               </div>
             </a>
             <p className="footer-tagline">
-              Premium Organic Haircare & Botanical Wellness. Formulated with 100% pure Ayurvedic extracts for timeless hair vitality.
+              Rooted in Ayurveda. Inspired by Nature. Thoughtfully formulated wellness and personal-care products designed for your everyday well-being.
             </p>
           </div>
 

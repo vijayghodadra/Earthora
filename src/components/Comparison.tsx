@@ -9,16 +9,16 @@ const Comparison = () => {
       <div className="section-container">
         
         <div className="comparison-header">
-          <span className="section-eyebrow">UNCOMPROMISING DIFFERENCE</span>
-          <h2 className="section-title">Why choose Earthora?</h2>
+          <span className="section-eyebrow">THE EARTHORA STANDARD</span>
+          <h2 className="section-title">Why Choose Earthora?</h2>
           <p className="section-subtitle">
-            See how our botanical formulation stands apart from mass-produced commercial alternatives.
+            Rooted in Ayurveda, inspired by nature, and formulated to meet modern standards of quality and everyday well-being.
           </p>
         </div>
 
         <motion.div 
           className="comparison-table-wrapper"
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
@@ -26,31 +26,33 @@ const Comparison = () => {
           <table className="comparison-table">
             <thead>
               <tr>
-                <th className="th-feature">Feature / Quality</th>
-                <th className="th-others">Standard Oils & Lotions</th>
+                <th className="th-feature">Standard & Focus</th>
+                <th className="th-others">Conventional Mass Brands</th>
                 <th className="th-earthora">
-                  <span>Earthora Elixir</span>
-                  <span className="table-highlight-badge">SUPERIOR</span>
+                  <div className="th-earthora-content">
+                    <span className="earthora-brand-name">Earthora</span>
+                    <span className="earthora-sub-pill">Nature • Ayurveda • Quality</span>
+                  </div>
                 </th>
               </tr>
             </thead>
             <tbody>
               {productData.comparison.map((item, idx) => (
                 <tr key={idx}>
-                  <td className="td-feature">{item.feature}</td>
+                  <td className="td-feature">
+                    <span className="feature-label">{item.feature}</span>
+                  </td>
                   <td className="td-others">
-                    {item.others ? (
-                      <span className="check-yes"><Check size={18} /></span>
-                    ) : (
-                      <span className="cross-no"><X size={18} /></span>
-                    )}
+                    <div className="td-comparison-cell">
+                      <span className="icon-cross"><X size={16} /></span>
+                      <span className="cell-text">{item.othersText || 'Mass-market commercial standard'}</span>
+                    </div>
                   </td>
                   <td className="td-earthora">
-                    {item.earthora ? (
-                      <span className="check-earthora"><Check size={20} /></span>
-                    ) : (
-                      <span className="cross-no"><X size={18} /></span>
-                    )}
+                    <div className="td-comparison-cell">
+                      <span className="icon-check"><Check size={18} /></span>
+                      <span className="cell-text font-medium">{item.earthoraText}</span>
+                    </div>
                   </td>
                 </tr>
               ))}

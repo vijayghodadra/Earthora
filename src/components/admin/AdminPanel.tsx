@@ -31,8 +31,9 @@ interface AdminPanelProps {
   bundles: ProductBundle[];
   onUpdateBundles: (bundles: ProductBundle[]) => void;
   orders: CustomerOrder[];
-  onUpdateOrderStatus: (orderId: string, status: OrderStatus, trackingNumber?: string) => void;
+  onUpdateOrderStatus: (orderId: string, status: OrderStatus, trackingNumber?: string, courier?: string) => void;
   customers: CustomerProfile[];
+  onDeleteCustomer?: (customerId: string) => void;
   reviews: Review[];
   onUpdateReviews: (reviews: Review[]) => void;
   coupons: CouponCode[];
@@ -48,6 +49,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   orders,
   onUpdateOrderStatus,
   customers,
+  onDeleteCustomer,
   reviews,
   onUpdateReviews,
   coupons,
@@ -229,6 +231,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           {activeTab === 'customers' && (
             <AdminCustomers
               customers={customers}
+              onDeleteCustomer={onDeleteCustomer}
             />
           )}
 

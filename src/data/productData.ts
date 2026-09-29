@@ -33,6 +33,8 @@ export interface Review {
   comment: string;
   verified: boolean;
   location: string;
+  productName?: string;
+  orderId?: string;
 }
 
 export interface FAQItem {
@@ -585,16 +587,42 @@ export const productData = {
     }
   ],
   story: {
-    eyebrow: 'MADE FOR TODAY’S DISCERNING INDIVIDUAL',
-    title: 'Most people never make time for the quiet care their body deserves.',
-    paragraph1: 'Long days, constant stress, and environmental fatigue are part of modern life — yet the body’s need for a moment of calm is often the first thing we skip.',
-    paragraph2: 'Earthora Aura Elixir is a signature botanical formulation crafted for total wellness. A few warm drops rubbed between palms and massage gently into skin turn a daily routine into an elevated self-care ritual.',
-    bullets: [
-      'Lightweight, non-greasy texture — absorbs smoothly with zero sticky residue',
-      'Free from harmful chemicals, parabens & artificial colorants',
-      'Infused with 6 pure botanical extracts in a nutrient-rich carrier base',
-      'Ideal for morning energizing or evening relaxation rituals'
-    ]
+    eyebrow: 'ABOUT US • ROOTED IN AYURVEDA',
+    title: 'About Earthora',
+    tagline: 'Rooted in Ayurveda. Inspired by Nature.',
+    introParagraphs: [
+      'At Earthora, we believe wellness begins with a closer connection to nature and the timeless wisdom of Ayurveda. Our journey is built around a simple idea — creating thoughtfully formulated wellness and personal-care products that fit naturally into modern lifestyles while staying inspired by traditional Ayurvedic principles.',
+      'We carefully select ingredients with a focus on quality, authenticity, and consistency, and work to bring together traditional knowledge with modern standards of product development and manufacturing.',
+      'From everyday wellness to skincare, every Earthora product is created with attention to what matters most — quality ingredients, responsible formulation, and a commitment to your everyday well-being.'
+    ],
+    philosophy: {
+      tag: 'OUR PHILOSOPHY',
+      title: 'Nature. Ayurveda. Quality.',
+      description: "We believe good products don't need to be complicated. Our aim is to create simple, purposeful products inspired by nature and Ayurveda, designed for everyday use."
+    },
+    promises: [
+      {
+        title: 'Ayurveda-Inspired Formulations',
+        description: 'Inspired by traditional Ayurvedic knowledge and natural ingredients.'
+      },
+      {
+        title: 'Quality & Care',
+        description: 'We believe every product should meet consistent quality standards.'
+      },
+      {
+        title: 'Thoughtful Ingredients',
+        description: 'We focus on carefully selected ingredients and responsible formulation.'
+      },
+      {
+        title: 'Modern Wellness',
+        description: "Bringing traditional wisdom into products designed for today's lifestyle."
+      }
+    ],
+    vision: {
+      tag: 'OUR VISION',
+      statement: 'To build a trusted Indian wellness brand that brings together the wisdom of Ayurveda, the goodness of nature, and modern standards of quality.'
+    },
+    signature: 'Earthora — Rooted in Ayurveda. Inspired by Nature.'
   },
   ingredients: [
     {
@@ -669,12 +697,48 @@ export const productData = {
     image: img5
   },
   comparison: [
-    { feature: '100% Pure Botanical Ingredients', earthora: true, others: false },
-    { feature: 'Non-Greasy Fast Absorption Formula', earthora: true, others: false },
-    { feature: 'Free from Parabens & Mineral Oils', earthora: true, others: false },
-    { feature: 'Rich in Essential Vitamin E & Antioxidants', earthora: true, others: true },
-    { feature: 'Sustainably & Ethically Sourced', earthora: true, others: false },
-    { feature: 'Cruelty-Free & Dermatologically Tested', earthora: true, others: false }
+    { 
+      feature: 'Core Formulation', 
+      earthoraText: 'Rooted in Ayurveda & inspired by nature', 
+      othersText: 'Chemical-heavy synthetic bases', 
+      earthora: true, 
+      others: false 
+    },
+    { 
+      feature: 'Ingredient Sourcing', 
+      earthoraText: 'Carefully selected for authenticity, quality & consistency', 
+      othersText: 'Low-cost bulk fillers & diluted extracts', 
+      earthora: true, 
+      others: false 
+    },
+    { 
+      feature: 'Product Philosophy', 
+      earthoraText: 'Simple, purposeful products made for daily modern life', 
+      othersText: 'Over-complicated formulas with unnecessary additives', 
+      earthora: true, 
+      others: false 
+    },
+    { 
+      feature: 'Quality & Safety', 
+      earthoraText: 'Traditional wisdom with modern manufacturing standards', 
+      othersText: 'Unstandardized commercial processing', 
+      earthora: true, 
+      others: false 
+    },
+    { 
+      feature: 'Clean & Responsible', 
+      earthoraText: 'Free from harsh parabens, silicones & artificial dyes', 
+      othersText: 'Commonly contains harsh sulfates & synthetic dyes', 
+      earthora: true, 
+      others: false 
+    },
+    { 
+      feature: 'Everyday Well-being', 
+      earthoraText: 'Gentle on skin barrier for consistent daily wellness', 
+      othersText: 'Can strip moisture barrier and cause irritation', 
+      earthora: true, 
+      others: false 
+    }
   ],
   reviews: [
     {

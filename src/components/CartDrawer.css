@@ -368,3 +368,129 @@
   margin-top: 0.75rem;
 }
 
+/* Order Complete Live Status & Actions */
+.order-live-status-card {
+  margin: 1.25rem 0;
+  padding: 1rem 1.25rem;
+  background: #fdfaf3;
+  border: 1px solid #ebd9b5;
+  border-radius: 12px;
+  text-align: left;
+}
+
+.live-status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: #8c6812;
+  font-size: 0.92rem;
+}
+
+.live-pulse-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #d97706;
+  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.25);
+  animation: pulse-dot 1.8s infinite ease-in-out;
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 0 6px rgba(217, 119, 6, 0.15); }
+  100% { transform: scale(0.9); opacity: 0.8; }
+}
+
+.live-status-sub {
+  margin: 0.4rem 0 0;
+  font-size: 0.82rem;
+  color: #6c5a32;
+  line-height: 1.45;
+}
+
+.order-success-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+  width: 100%;
+}
+
+.track-cta-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: #1b3022;
+  color: #ffffff;
+  padding: 0.9rem;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.track-cta-btn:hover {
+  background: #284733;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid #dcd7ce;
+  color: #4a5950;
+  padding: 0.75rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: #f4f3ef;
+  color: #1a271f;
+}
+
+/* Checkout Login / User Banners */
+.checkout-user-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  background: #eef8f1;
+  border: 1px solid #bde6c7;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  color: #166534;
+}
+
+.checkout-login-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #fbf9f4;
+  border: 1px solid #ecd8b2;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  color: #68501e;
+}
+
+.checkout-auth-link {
+  background: transparent;
+  border: none;
+  color: #8c6812;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.checkout-auth-link:hover {
+  color: #1b3022;
+}
+
+

@@ -25,12 +25,26 @@ import {
 } from './data/adminData';
 import type { CustomerOrder, CustomerProfile, CouponCode, StoreSettings, OrderStatus } from './types/adminTypes';
 
+import { UserAuthModal } from './components/auth/UserAuthModal';
+import type { UserProfileData } from './components/auth/UserAuthModal';
+import { OrderTrackingModal } from './components/tracking/OrderTrackingModal';
 import { supabaseDb, isSupabaseConfigured } from './lib/supabase';
 
 function App() {
   const [currentView, setCurrentView] = useState<'store' | 'admin'>('store');
   const [isAdminLoginOpen, setIsAdminLoginOpen] = useState(false);
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
+
+  // Customer user authentication state
+  const [currentUser, setCurrentUser] = useState<UserProfileData | null>(() => {
+    const saved = localStorage.getItem('earthora_current_user');
+    return saved ? JSON.parse(saved) : null;
+  });
+  const [isUserAuthOpen, setIsUserAuthOpen] = useState(false);
+
+  // Live Order Tracking State
+  const [isTrackingOpen, setIsTrackingOpen] = useState(false);
+  const [activeTrackingOrderId, setActiveTrackingOrderId] = useState<string | undefined>(undefined);
 
   // Dynamic state with localStorage initialization
   const [bundles, setBundles] = useState<ProductBundle[]>(() => {
@@ -40,12 +54,28 @@ function App() {
 
   const [orders, setOrders] = useState<CustomerOrder[]>(() => {
     const saved = localStorage.getItem('earthora_orders');
-    return saved ? JSON.parse(saved) : initialOrders;
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return parsed.filter((o: CustomerOrder) => !['ORD-9421', 'ORD-9420', 'ORD-9419', 'ORD-9418'].includes(o.id));
+      } catch (e) {
+        return [];
+      }
+    }
+    return initialOrders;
   });
 
-  const [customers] = useState<CustomerProfile[]>(() => {
+  const [customers, setCustomers] = useState<CustomerProfile[]>(() => {
     const saved = localStorage.getItem('earthora_customers');
-    return saved ? JSON.parse(saved) : initialCustomers;
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return parsed.filter((c: CustomerProfile) => !['CUST-101', 'CUST-102', 'CUST-103', 'CUST-104'].includes(c.id));
+      } catch (e) {
+        return [];
+      }
+    }
+    return initialCustomers;
   });
 
   const [reviewsList, setReviewsList] = useState<Review[]>(() => {
@@ -196,19 +226,49 @@ function App() {
     setCurrentView('admin');
   };
 
-  const handleUpdateOrderStatus = (orderId: string, status: OrderStatus, trackingNumber?: string) => {
+  const handleUpdateOrderStatus = (orderId: string, status: OrderStatus, trackingNumber?: string, courier?: string) => {
     setOrders(prev => prev.map(ord => {
       if (ord.id === orderId) {
         return {
           ...ord,
           status,
-          trackingNumber: trackingNumber || ord.trackingNumber
+          trackingNumber: trackingNumber || ord.trackingNumber,
+          courier: courier || ord.courier
         };
       }
       return ord;
     }));
     if (isSupabaseConfigured) {
       supabaseDb.updateOrderStatus(orderId, status, trackingNumber);
+    }
+  };
+
+  const handleDeleteCustomer = (customerId: string) => {
+    setCustomers(prev => {
+      const updated = prev.filter(c => c.id !== customerId);
+      localStorage.setItem('earthora_customers', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const handleAddReview = (newReview: Review) => {
+    setReviewsList(prev => {
+      const existingIdx = prev.findIndex(r => 
+        r.id === newReview.id || 
+        (Boolean(r.orderId) && r.orderId === newReview.orderId && r.productName === newReview.productName)
+      );
+      let updated: Review[];
+      if (existingIdx > -1) {
+        updated = [...prev];
+        updated[existingIdx] = newReview;
+      } else {
+        updated = [newReview, ...prev];
+      }
+      localStorage.setItem('earthora_reviews', JSON.stringify(updated));
+      return updated;
+    });
+    if (isSupabaseConfigured) {
+      supabaseDb.saveReviews([newReview, ...reviewsList]);
     }
   };
 
@@ -223,6 +283,7 @@ function App() {
         orders={orders}
         onUpdateOrderStatus={handleUpdateOrderStatus}
         customers={customers}
+        onDeleteCustomer={handleDeleteCustomer}
         reviews={reviewsList}
         onUpdateReviews={setReviewsList}
         coupons={coupons}
@@ -240,6 +301,17 @@ function App() {
         onOpenCart={() => setIsCartOpen(true)}
         onQuickBuy={handleQuickBuy}
         onOpenAdmin={handleOpenAdminTrigger}
+        currentUser={currentUser}
+        onOpenAuth={() => setIsUserAuthOpen(true)}
+        onLogout={() => {
+          localStorage.removeItem('earthora_current_user');
+          setCurrentUser(null);
+        }}
+        onOpenTracking={() => {
+          setActiveTrackingOrderId(undefined);
+          setIsTrackingOpen(true);
+        }}
+        orders={orders}
       />
 
       <main>
@@ -255,8 +327,8 @@ function App() {
           productsList={bundles}
         />
         <Comparison />
-        <Reviews reviewsList={reviewsList} />
         <BrandStory />
+        <Reviews />
       </main>
 
       <Footer onOpenAdmin={handleOpenAdminTrigger} />
@@ -267,14 +339,72 @@ function App() {
         items={cartItems}
         onUpdateQty={handleUpdateQty}
         onRemoveItem={handleRemoveItem}
+        currentUser={currentUser}
+        onOpenAuth={() => setIsUserAuthOpen(true)}
+        onOpenTracking={(orderId) => {
+          setActiveTrackingOrderId(orderId);
+          setIsTrackingOpen(true);
+        }}
         onPlaceOrder={(newOrder) => {
           setOrders(prev => [newOrder, ...prev]);
+          setCartItems([]); // Automatically clear cart items upon successful order!
+          setCustomers(prev => {
+            const emailKey = (newOrder.email || newOrder.phone || '').toLowerCase().trim();
+            const existingIdx = prev.findIndex(c => (c.email || c.phone || '').toLowerCase().trim() === emailKey);
+            if (existingIdx > -1) {
+              const updated = [...prev];
+              const newTotalSpent = updated[existingIdx].totalSpent + newOrder.total;
+              updated[existingIdx] = {
+                ...updated[existingIdx],
+                totalOrders: updated[existingIdx].totalOrders + 1,
+                totalSpent: newTotalSpent,
+                status: newTotalSpent > 3000 ? 'VIP' : 'Active'
+              };
+              return updated;
+            } else {
+              const newProfile: CustomerProfile = {
+                id: `CUST-${Date.now().toString().slice(-4)}`,
+                name: newOrder.customerName,
+                email: newOrder.email,
+                phone: newOrder.phone,
+                location: newOrder.city,
+                totalOrders: 1,
+                totalSpent: newOrder.total,
+                joinedDate: new Date().toISOString().slice(0, 10),
+                status: newOrder.total > 3000 ? 'VIP' : 'Active'
+              };
+              return [newProfile, ...prev];
+            }
+          });
           if (isSupabaseConfigured) {
             supabaseDb.createOrder(newOrder);
           }
         }}
       />
 
+      {/* Customer & Admin Login Modal */}
+      <UserAuthModal
+        isOpen={isUserAuthOpen}
+        onClose={() => setIsUserAuthOpen(false)}
+        onLoginSuccess={(user) => {
+          setCurrentUser(user);
+        }}
+        onAdminLoginSuccess={handleAdminLoginSuccess}
+      />
+
+      {/* Live Order Tracking Modal */}
+      <OrderTrackingModal
+        isOpen={isTrackingOpen}
+        onClose={() => setIsTrackingOpen(false)}
+        orders={orders}
+        initialOrderId={activeTrackingOrderId}
+        currentUser={currentUser}
+        onOpenStore={() => setIsTrackingOpen(false)}
+        reviews={reviewsList}
+        onAddReview={handleAddReview}
+      />
+
+      {/* Executive Admin Modal */}
       <AdminLoginModal
         isOpen={isAdminLoginOpen}
         onClose={() => setIsAdminLoginOpen(false)}

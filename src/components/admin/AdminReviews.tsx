@@ -163,6 +163,13 @@ export const AdminReviews: React.FC<AdminReviewsProps> = ({ reviews, onUpdateRev
                   {rev.verified && <span className="verified-badge-sm"><CheckCircle size={12} /> Verified</span>}
                 </h4>
                 <span className="user-sub">{rev.location} • {rev.date}</span>
+                {rev.productName && (
+                  <div style={{ marginTop: '0.35rem', fontSize: '0.78rem', color: '#1b4d2e' }}>
+                    <span style={{ color: '#667085' }}>Product: </span>
+                    <strong style={{ color: '#142319' }}>{rev.productName}</strong>
+                    {rev.orderId && <span style={{ marginLeft: '0.35rem', color: '#946c1a', fontFamily: 'monospace', fontWeight: 600 }}>[#{rev.orderId}]</span>}
+                  </div>
+                )}
               </div>
               <div className="stars-row">
                 {Array.from({ length: 5 }).map((_, i) => (

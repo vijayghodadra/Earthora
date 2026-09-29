@@ -96,56 +96,57 @@ const FeaturedCollection = ({ onAddToCart, onBuyNow, productsList }: FeaturedCol
   return (
     <>
       <section id="collection" className="collection">
-        <div className="collection-grid">
-          
-          <div className="intro-block">
-            <div className="intro-eyebrow">THE COLLECTION</div>
-            <h2 className="intro-title">Selected<br/>Pieces</h2>
-            <p className="intro-desc">{totalCount} exceptional pieces.<br/>One uncompromising<br/>standard of luxury.</p>
+        <div className="section-container">
+          <div className="collection-grid">
+            
+            <div className="intro-block">
+              <div className="intro-eyebrow">THE COLLECTION</div>
+              <h2 className="intro-title">Selected<br/>Pieces</h2>
+              <p className="intro-desc">{totalCount} exceptional pieces.<br/>One uncompromising<br/>standard of luxury.</p>
+            </div>
+
+            {displayProducts.map((product, index) => (
+              <motion.div 
+                key={product.id} 
+                className={`product-card ${product.className}`}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] as const, delay: 0.1 + (index * 0.1) }}
+                onClick={() => setSelectedProduct(product)}
+              >
+                <div className="card-top">
+                  <div className="card-number">
+                    <span>{String(index + 1).padStart(2, '0')}</span>
+                    <span className="divider">/</span>
+                    <span>{String(totalCount).padStart(2, '0')}</span>
+                  </div>
+                  <div className="card-image-wrapper">
+                    <img src={product.image} alt={product.name} loading="lazy" />
+                    <div className="circle-plus"><Plus size={16} /></div>
+                  </div>
+                </div>
+                <div className="card-bottom">
+                  <div className="card-bottom-flex">
+                    <div className="text-stack">
+                      <div className="card-category">{product.category}</div>
+                      <h3 className="card-title">{product.name}</h3>
+                      <p className="card-desc">
+                        {product.desc.split('\n').map((line, i) => <span key={i}>{line}<br/></span>)}
+                      </p>
+                    </div>
+                    <div className="price-stack">
+                      <span className="card-price">{product.price}</span>
+                    </div>
+                  </div>
+                  <button className="view-btn">
+                    VIEW PIECE <MoveRight strokeWidth={1} size={32} className="arrow-icon" />
+                  </button>
+                </div>
+              </motion.div>
+            ))}
           </div>
-
-          {displayProducts.map((product, index) => (
-            <motion.div 
-              key={product.id} 
-              className={`product-card ${product.className}`}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] as const, delay: 0.1 + (index * 0.1) }}
-              onClick={() => setSelectedProduct(product)}
-            >
-              <div className="card-top">
-                <div className="card-number">
-                  <span>{String(index + 1).padStart(2, '0')}</span>
-                  <span className="divider">/</span>
-                  <span>{String(totalCount).padStart(2, '0')}</span>
-                </div>
-                <div className="card-image-wrapper">
-                  <img src={product.image} alt={product.name} loading="lazy" />
-                  <div className="circle-plus"><Plus size={16} /></div>
-                </div>
-              </div>
-              <div className="card-bottom">
-                <div className="card-bottom-flex">
-                  <div className="text-stack">
-                    <div className="card-category">{product.category}</div>
-                    <h3 className="card-title">{product.name}</h3>
-                    <p className="card-desc">
-                      {product.desc.split('\n').map((line, i) => <span key={i}>{line}<br/></span>)}
-                    </p>
-                  </div>
-                  <div className="price-stack">
-                    <span className="card-price">{product.price}</span>
-                  </div>
-                </div>
-                <button className="view-btn">
-                  VIEW PIECE <MoveRight strokeWidth={1} size={32} className="arrow-icon" />
-                </button>
-              </div>
-            </motion.div>
-          ))}
         </div>
-
       </section>
 
       {selectedProduct && (

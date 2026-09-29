@@ -3,7 +3,7 @@ import type { CustomerOrder, OrderStatus } from '../types/adminTypes';
 import type { ProductBundle, Review } from '../data/productData';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://wkoxputlkexiwkpgghux.supabase.co';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indrb3hwdXRsa2V4aXdrcGdnaHV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkyOTkxNDIsImV4cCI6MjEwNDg3NTE0Mn0.vGSpWGW4AJVJISe0ATWkI9Jb2bDelbFNDxum7rR-wvU';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 

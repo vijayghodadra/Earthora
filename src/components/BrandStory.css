@@ -1,68 +1,204 @@
 .product-story-section {
-  padding: 4.5rem 1rem;
+  padding: 5rem 1.5rem;
   background: var(--bg-dark);
 }
 
-.story-centered-content {
-  max-width: 800px;
+.story-clean-wrapper {
+  max-width: 820px;
   margin: 0 auto;
+  text-align: center;
+}
+
+/* Main Titles */
+.clean-story-title {
+  font-family: var(--font-ui), var(--font-body), sans-serif;
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin: 0 0 0.5rem 0;
+}
+
+.clean-story-tagline {
+  font-family: var(--font-ui), var(--font-body), sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--accent-olive);
+  margin-bottom: 2.25rem;
+  letter-spacing: -0.01em;
+}
+
+/* Paragraphs */
+.clean-story-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+}
+
+.clean-paragraph {
+  font-family: var(--font-body), sans-serif;
+  font-size: 1.08rem;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Dividers */
+.clean-story-divider {
+  width: 56px;
+  height: 2px;
+  background: var(--border-subtle);
+  margin: 3rem auto;
+}
+
+/* Sub-sections */
+.clean-story-block {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
+  gap: 0.85rem;
 }
 
-.story-heading {
-  font-size: 2.2rem;
-  line-height: 1.2;
-  margin-bottom: 1.5rem;
-  text-align: center;
+/* Increased Main Headers for OUR PHILOSOPHY, OUR PROMISE, OUR VISION */
+.clean-subheading {
+  font-family: var(--font-ui), sans-serif;
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   color: var(--text-primary);
+  margin: 0;
 }
 
-@media (min-width: 768px) {
-  .story-heading {
-    font-size: 2.6rem;
-  }
+.clean-motto {
+  font-family: var(--font-ui), sans-serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--accent-olive);
+  letter-spacing: 0.01em;
+  margin: 0.15rem 0 0.25rem 0;
 }
 
-.story-paragraph {
-  color: var(--text-secondary);
-  font-size: 1.05rem;
-  line-height: 1.75;
-  margin-bottom: 1.25rem;
+/* Promise List */
+.clean-promise-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  margin-top: 0.75rem;
   text-align: center;
-  max-width: 740px;
-}
-
-.story-bullets-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
   width: 100%;
 }
 
-@media (min-width: 640px) {
-  .story-bullets-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 1.25rem;
+.clean-promise-row {
+  font-family: var(--font-body), sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+}
+
+.clean-promise-name {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.clean-promise-separator {
+  margin: 0 0.5rem;
+  color: var(--accent-olive);
+  font-weight: 600;
+}
+
+.clean-promise-desc {
+  color: var(--text-secondary);
+}
+
+/* Vision */
+.clean-vision-text {
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  font-weight: 500;
+  line-height: 1.8;
+  max-width: 720px;
+}
+
+/* Closing Signoff */
+.clean-story-closing {
+  margin-top: 0.5rem;
+}
+
+.clean-signature {
+  font-family: var(--font-ui), sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--accent-olive);
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .clean-story-title {
+    font-size: 3rem;
+  }
+
+  .clean-story-tagline {
+    font-size: 1.35rem;
+  }
+
+  .clean-subheading {
+    font-size: 2.25rem;
+  }
+
+  .clean-motto {
+    font-size: 1.5rem;
+  }
+
+  .clean-vision-text {
+    font-size: 1.35rem;
   }
 }
 
-.story-bullet-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.65rem;
-  font-size: 0.94rem;
-  font-weight: 500;
-  color: var(--text-primary);
-  text-align: center;
-}
+@media (max-width: 640px) {
+  .product-story-section {
+    padding: 3.5rem 1rem;
+  }
 
-.bullet-icon {
-  color: var(--accent-olive);
-  flex-shrink: 0;
+  .clean-story-title {
+    font-size: 1.85rem;
+  }
+
+  .clean-story-tagline {
+    font-size: 1.05rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .clean-paragraph {
+    font-size: 0.96rem;
+    line-height: 1.7;
+  }
+
+  .clean-subheading {
+    font-size: 1.45rem;
+  }
+
+  .clean-motto {
+    font-size: 1.15rem;
+  }
+
+  .clean-promise-row {
+    font-size: 0.94rem;
+    line-height: 1.6;
+  }
+
+  .clean-vision-text {
+    font-size: 1.08rem;
+    line-height: 1.7;
+  }
+
+  .clean-signature {
+    font-size: 1rem;
+  }
+
+  .clean-story-divider {
+    margin: 2.25rem auto;
+  }
 }

@@ -92,18 +92,22 @@ main {
 
 section {
   width: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+  position: relative;
+  overflow-x: clip;
 }
 
 .section-container {
   width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 1rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1.25rem;
   box-sizing: border-box;
 }
 
@@ -115,7 +119,7 @@ section {
 
 @media (min-width: 1024px) {
   .section-container {
-    padding: 0 2.5rem;
+    padding: 0 2rem;
   }
 }
 

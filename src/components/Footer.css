@@ -44,10 +44,10 @@
 }
 
 .footer-logo-badge {
-  background: rgba(255, 255, 255, 0.98);
-  padding: 8px 18px;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+  background: rgba(255, 255, 255, 0.95);
+  padding: 6px 14px;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   transition: transform 0.3s ease;
@@ -58,9 +58,10 @@
 }
 
 .footer-logo-img {
-  height: 48px;
+  height: 34px;
   width: auto;
   object-fit: contain;
+  mix-blend-mode: multiply;
 }
 
 .footer-tagline {

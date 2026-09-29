@@ -14,7 +14,7 @@ import {
   Leaf,
   ShieldCheck
 } from 'lucide-react';
-import logoImg from '../../assets/logo.png';
+import logoImg from '../../assets/logo.jpeg';
 import './UserAuthModal.css';
 
 export interface UserProfileData {

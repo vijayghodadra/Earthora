@@ -64,34 +64,23 @@
 }
 
 .brand-logo-img {
-  height: 48px;
-  max-height: 52px;
+  height: 36px;
   width: auto;
   object-fit: contain;
   display: block;
-  filter: drop-shadow(0 2px 8px rgba(30, 45, 25, 0.1));
-  transition: transform 0.25s ease;
+  mix-blend-mode: multiply;
+  filter: contrast(108%) drop-shadow(0 2px 6px rgba(59, 78, 50, 0.15));
 }
 
 @media (min-width: 480px) {
   .brand-logo-img {
-    height: 54px;
-    max-height: 58px;
-  }
-}
-
-@media (min-width: 992px) {
-  .brand-logo-img {
-    height: 60px;
-    max-height: 64px;
+    height: 40px;
   }
 }
 
 .drawer-logo-img {
-  height: 46px;
-  max-height: 50px;
-  width: auto;
-  object-fit: contain;
+  height: 34px;
+  mix-blend-mode: multiply;
 }
 
 .nav-desktop-menu {

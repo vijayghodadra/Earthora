@@ -91,14 +91,11 @@
 }
 
 .auth-pillar-logo {
-  height: 48px;
+  height: 34px;
   width: auto;
   align-self: flex-start;
-  background: #ffffff;
-  padding: 6px 14px;
-  border-radius: 10px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
-  object-fit: contain;
+  filter: brightness(1.1);
+  border-radius: 6px;
 }
 
 .auth-pillar-badge {

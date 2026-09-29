@@ -1,5 +1,5 @@
 import './Footer.css';
-import logoImg from '../assets/logo.png';
+import logoImg from '../assets/logo.jpeg';
 
 interface FooterProps {
   onOpenAdmin?: () => void;

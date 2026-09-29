@@ -18,6 +18,7 @@
   width: 100%;
   max-width: 900px;
   min-height: 540px;
+  margin: auto;
   border-radius: var(--radius-xl);
   border: 1px solid rgba(59, 78, 50, 0.15);
   box-shadow: 0 25px 60px -15px rgba(24, 35, 21, 0.35);
@@ -472,4 +473,33 @@
 
 .link-switch:hover {
   text-decoration: underline;
+}
+
+/* Mobile Friendly & Responsive Center Lock */
+@media (max-width: 640px) {
+  .auth-overlay-backdrop {
+    padding: 0.75rem;
+    align-items: center;
+  }
+  .auth-modal-window {
+    min-height: auto;
+    max-height: 92vh;
+    overflow-y: auto;
+    border-radius: var(--radius-lg);
+  }
+  .auth-form-container {
+    padding: 2.25rem 1.15rem 1.75rem 1.15rem;
+  }
+  .auth-close-btn {
+    top: 0.85rem;
+    right: 0.85rem;
+    width: 34px;
+    height: 34px;
+  }
+  .form-title {
+    font-size: 1.5rem;
+  }
+  .auth-mode-switcher {
+    max-width: 100%;
+  }
 }
